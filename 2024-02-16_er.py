@@ -39,7 +39,7 @@ def bar():
     df = pd.read_parquet('https://storage.data.gov.my/finsector/exchangerates.parquet')
     DATE_E = df.date.iloc[-1]
     DATE_S = DATE_E - relativedelta(years=1)
-    df = df[df.date >= DATE_S].set_index('date')
+    df = df[(df.date >= DATE_S) & (df.date <= DATE_E)].set_index('date')
 
     # create percentage changes relative to first date
     df = df.multiply(1/np.array(list(df.iloc[0])), axis='columns')
