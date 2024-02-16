@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import date
 from dateutil.relativedelta import relativedelta
 import seaborn as sb
 import numpy as np
@@ -37,6 +38,7 @@ countries = {
 
 def bar():
     df = pd.read_parquet('https://storage.data.gov.my/finsector/exchangerates.parquet')
+    df.date = df.date.dt.date
     DATE_E = df.date.iloc[-1]
     DATE_S = DATE_E - relativedelta(years=1)
     df = df[(df.date >= DATE_S) & (df.date <= DATE_E)].set_index('date')
@@ -53,13 +55,13 @@ def bar():
     plt.rcParams.update({'font.size': 10,
                         'font.family':'sans-serif',
                         'grid.linestyle': 'dotted',
-                        'figure.figsize': [5,9],
+                        'figure.figsize': [5,8],
                         'figure.autolayout': True})
     fig, ax = plt.subplots()
 
     n_pos = len(df[df.performance >= 0])
     n_neg = len(df[df.performance < 0])
-    col_pos = sb.color_palette('Greens',n_colors=n_pos).as_hex()
+    col_pos = sb.color_palette('Greens',n_colors=n_pos*2).as_hex()
     col_neg = sb.color_palette('Reds',n_colors=n_neg).as_hex()
     col_neg.reverse()
 
@@ -67,7 +69,7 @@ def bar():
     df.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_neg+col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f'Ringgit vs Currencies of Major Trading Partners\n% change from {DATE_S:%d %b %Y} to {DATE_E:%d %b %Y}\n',linespacing=1.8)
+    ax.set_title(f"""Ringgit vs Currencies of Major Trading Partners\n% change from {DATE_S:%d %b %Y} to {DATE_E:%d %b %Y}\n""",linespacing=1.8)
     for b in ['top','right','bottom','left']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -76,15 +78,16 @@ def bar():
 
     # y-axis adjustments
     ax.set_ylabel('')
-    ax.vlines(x=0,ymin=-1,ymax=22,colors=['gray'],linestyles=['dashed'],linewidth=0.7)
+    ax.set_yticklabels(ax.get_yticklabels(), va="center")
+    ax.vlines(x=0,ymin=0,ymax=21,colors=['#d3d3d3'],linestyles=['dotted'],linewidth=0.7)
 
     # x-axis adjustments
     ax.set_xlabel('')
-    ax.set_xlim(-22)
+    ax.set_xlim(-21)
     ax.xaxis.grid(False)
     ax.get_xaxis().set_visible(False)
     for c in ax.containers:
-        labels = [f'{df[v].iloc[i]:,.1f}%  ' if i < 21 else f' +{df[v].iloc[i]:,.1f}%' for i in range(len(df))]
+        labels = [f'{df[v].iloc[i]:,.1f}%  ' if i < n_neg else f' +{df[v].iloc[i]:,.1f}%' for i in range(len(df))]
         ax.bar_label(c, labels=labels,fontsize=9)
 
     # ALT-text
