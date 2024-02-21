@@ -1,5 +1,5 @@
 # local workfiles
-playground*.ipynb
+draft*
 working*
 notnow*
 .thev*/
