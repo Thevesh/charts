@@ -6,12 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
 import matplotlib.dates as mdates
-
-PATH = '2024-02-14_valentines'
-URL_DATA = 'https://storage.data.gov.my/demography/births.parquet'
+import os
 
 
 def timeseries():
+
+    URL_DATA = 'https://storage.data.gov.my/demography/births.parquet'
     df = pd.read_parquet(URL_DATA).drop('state',axis=1)
     df = df[pd.to_datetime(df.date).dt.year >= 2000]
     df = df[pd.to_datetime(df.date).dt.year < 2023]
@@ -63,10 +63,15 @@ def timeseries():
     if ALT == 1:
         print(ax.get_title().strip())
 
-    plt.savefig(f'output/{PATH}/timeseries.png',dpi=400)
+    plt.savefig(f'timeseries.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-02-14_valentines/')
 
 print('')
 timeseries()
 print('')
+
+os.chdir(CURDIR)

@@ -5,8 +5,8 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
+import os
 
-PATH = '2024-02-16_er'
 
 countries = {
     "myr_thb": "Thailand",
@@ -98,10 +98,15 @@ def bar():
             print(f'{i+1}) {df.index[len(df)-i-1]}: {labels[len(df)-i-1].strip()}')
 
     
-    plt.savefig(f'output/{PATH}/bar.png',dpi=400)
+    plt.savefig(f'bar.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-02-16_er/')
 
 print('')
 bar()
 print('')
+
+os.chdir(CURDIR)

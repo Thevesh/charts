@@ -3,12 +3,7 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
-
-PATH = '2024-01-30_spm'
-TOTAL_2022 = 388832
-
-df = pd.read_excel(f'src/{PATH}.xlsx')
-df = df[df.year == 2022].drop(['year','code'],axis=1).set_index('subject')
+import os
 
 
 def bar_calon_most():
@@ -50,7 +45,7 @@ def bar_calon_most():
         for i in range(len(pf)):
             print(f'{i+1}) {pf.index[len(pf)-i-1]}: {labels[len(pf)-i-1].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_calon_most.png',dpi=400)
+    plt.savefig(f'bar_calon_most.png',dpi=400)
     plt.close()
 
 
@@ -93,7 +88,7 @@ def bar_calon_least():
         for i in range(len(pf)):
             print(f'{len(pf)-i}) {pf.index[len(pf)-i-1]}: {labels[len(pf)-i-1].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_calon_least.png',dpi=400)
+    plt.savefig(f'bar_calon_least.png',dpi=400)
     plt.close()
 
 
@@ -136,7 +131,7 @@ def bar_results_gagal():
         for i in range(len(pf)):
             print(f'{i+1}) {pf.index[len(pf)-i-1]}: {labels[len(pf)-i-1].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_results_gagal.png',dpi=400)
+    plt.savefig(f'bar_results_gagal.png',dpi=400)
     plt.close()
 
 
@@ -179,7 +174,7 @@ def bar_results_a():
         for i in range(len(pf)):
             print(f'{i+1}) {pf.index[len(pf)-i-1]}: {labels[len(pf)-i-1].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_results_a.png',dpi=400)
+    plt.savefig(f'bar_results_a.png',dpi=400)
     plt.close()
 
 
@@ -223,9 +218,17 @@ def bar_results_a_bahasa():
         for i in range(len(pf)):
             print(f'{i+1}) {pf.index[len(pf)-i-1]}: {labels[len(pf)-i-1].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_results_a_bahasa.png',dpi=400)
+    plt.savefig(f'bar_results_a_bahasa.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-01-30_spm/')
+
+TOTAL_2022 = 388832
+
+df = pd.read_excel(f'src.xlsx')
+df = df[df.year == 2022].drop(['year','code'],axis=1).set_index('subject')
 
 print('')
 print(f'{len(df)} subjects and {TOTAL_2022:,} calon in total')
@@ -240,3 +243,5 @@ bar_results_a()
 print('')
 bar_results_a_bahasa()
 print('')
+
+os.chdir(CURDIR)

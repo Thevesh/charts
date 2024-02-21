@@ -3,13 +3,11 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
-
-
-PATH = '2024-02-10_cny_births'
+import os
 
 
 def timeseries():
-    df = pd.read_excel(f'src/{PATH}.xlsx').set_index('year')
+    df = pd.read_excel(f'src.xlsx').set_index('year')
 
 
     plt.rcParams.update({'font.size': 10,
@@ -56,10 +54,15 @@ def timeseries():
         print(ax.get_title())
         for i in range(len(df)): print(f'{df.index[i]}: {df["births"].iloc[i]:,.0f} births')
 
-    plt.savefig(f'output/{PATH}/timeseries.png',dpi=400)
+    plt.savefig(f'timeseries.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-02-10_cny/')
 
 print('')
 timeseries()
 print('')
+
+os.chdir(CURDIR)

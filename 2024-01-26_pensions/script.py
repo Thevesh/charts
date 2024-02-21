@@ -3,12 +3,11 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
-
-PATH = '2024-01-26_pensions'
+import os
 
 
 def timeseries_pension_politician():
-    df = pd.read_excel(f'src/{PATH}.xlsx').set_index('year')
+    df = pd.read_excel(f'src.xlsx').set_index('year')
 
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
@@ -50,12 +49,12 @@ def timeseries_pension_politician():
         print(ax.get_title())
         for i in range(len(df)): print(f'{df.index[i]}: RM{df["politician"].iloc[i]:.1f} mil')
 
-    plt.savefig(f'output/{PATH}/timeseries_pension_politician.png',dpi=400)
+    plt.savefig(f'timeseries_pension_politician.png',dpi=400)
     plt.close()
 
 
 def bar_pension_politician():
-    df = pd.read_excel(f'src/{PATH}.xlsx')
+    df = pd.read_excel(f'src.xlsx')
     df = df[df.year == 2024].drop('year',axis=1) / 1000
     df = df.transpose().drop('hakim').rename(columns={14:'jumlah'})
     df.index = ['Keseluruhan','Mengurus (OE)','Emolumen','Pencen','Pencen\nAhli Politik']
@@ -97,12 +96,12 @@ def bar_pension_politician():
         for i in range(len(df)):
             print(f'{df.index[i]}: {labels[i].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_pension_politician.png',dpi=400)
+    plt.savefig(f'bar_pension_politician.png',dpi=400)
     plt.close()
 
 
 def bar_pension():
-    df = pd.read_excel(f'src/{PATH}.xlsx',sheet_name='pensions')
+    df = pd.read_excel(f'src.xlsx',sheet_name='pensions')
     df = df[df.year == 2024].drop('year',axis=1).transpose().rename(columns={14:'jumlah'})
     df.index = ['Keseluruhan','Pesara Sem Msia','Pesara Sarawak','Pesara Sabah','Polis','Tentera','Askar Johor','Rancangan BAY','Ahli Sukarela','Ahli Politik','Hakim']
     df = df/1000
@@ -144,12 +143,12 @@ def bar_pension():
         for i in range(len(df)):
             print(f'{df.index[i]}: {labels[i].strip()}')
 
-    plt.savefig(f'output/{PATH}/bar_pension.png',dpi=400)
+    plt.savefig(f'bar_pension.png',dpi=400)
     plt.close()
 
 
 def timeseries_pension():
-    df = pd.read_excel(f'src/{PATH}.xlsx').set_index('year')
+    df = pd.read_excel(f'src.xlsx').set_index('year')
     df = df/1000
     df['pension_prop'] = df.pension / df.oe * 100
 
@@ -201,9 +200,12 @@ def timeseries_pension():
         print(TITLE)
         for i in range(len(df)): print(f'{df.index[i]}: RM{df["pension"].iloc[i]:.1f} bil ({df["pension_prop"].iloc[i]:.1f}%)')
 
-    plt.savefig(f'output/{PATH}/timeseries_pension.png',dpi=400)
+    plt.savefig(f'timeseries_pension.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-01-26_pensions/')
 
 print('')
 timeseries_pension_politician()
@@ -214,3 +216,5 @@ bar_pension()
 print('')
 timeseries_pension()
 print('')
+
+os.chdir(CURDIR)

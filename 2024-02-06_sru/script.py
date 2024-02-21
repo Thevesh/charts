@@ -3,12 +3,12 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
-
-PATH = '2024-02-06_sru'
-SRC = 'https://storage.dosm.gov.my/labour/lfs_qtr_sru_age.parquet'
+import os
 
 
 def timeseries():
+    SRC = 'https://storage.dosm.gov.my/labour/lfs_qtr_sru_age.parquet'
+
     df = pd.read_parquet(SRC)
     df.date = pd.to_datetime(df.date)
     df = df[(df.variable == 'rate') & (df.age.isin(['15-24','25-34']))].drop('variable',axis=1).pivot(index='date',columns='age',values='sru')
@@ -57,10 +57,15 @@ def timeseries():
         print(ax.get_title())
         for i in range(len(df)): print(f'{df.index[i]:%Y-%m}: {df["15-24"].iloc[i]:.1f}%, {df["25-34"].iloc[i]:.1f}%\n')
 
-    plt.savefig(f'output/{PATH}/timeseries.png',dpi=400)
+    plt.savefig(f'timeseries.png',dpi=400)
     plt.close()
 
+
+CURDIR = os.getcwd()
+os.chdir(f'{CURDIR}/2024-02-06_sru/')
 
 print('')
 timeseries()
 print('')
+
+os.chdir(CURDIR)
