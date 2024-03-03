@@ -21,7 +21,9 @@ def timeseries():
     df.plot(y='rate',ax=ax,marker='.',color='red')
 
     # plot-wide adjustments
-    ax.set_title(f"""Malaysia: Maternal Mortality Rate from 1946 to 2022\n(maternal death = died during pregnancy / childbirth)""",linespacing=1.5)
+    ax.set_title(f"""Malaysia: Maternal Mortality Rate from 1946 to 2022
+Maternal death = died during pregnancy / childbirth
+The rates are per 100,000 births""",linespacing=1.8)
     for b in ['top','right']: ax.spines[b].set_visible(False)
     ax.set_axisbelow(True)
     ax.get_legend().remove()
