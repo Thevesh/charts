@@ -39,8 +39,8 @@ The rates are per 100,000 births""",linespacing=1.8)
     ax.xaxis.grid(True,alpha=0.4)
 
     # annotations
-    ax.annotate(f'In 1946, roughly 1 in every 140\npregnancies ended in death',xy=(date(1949,1,1),620),color='red',fontsize=10,linespacing=1.5,ha='left')
-    ax.annotate(f'By 2022, that number went\ndown to just 1 in 4000',(date(2022,1,1),100),color='red',fontsize=10,linespacing=1.5,ha='right')
+    ax.annotate(f'In 1946, roughly 1 in every 140\npregnancies ended in death',xy=(date(1969,1,1),620),color='red',fontsize=10,linespacing=1.5,ha='center')
+    ax.annotate(f'By 1986, that number went\ndown to just 1 in 4000\nand has stayed there',(date(1990,1,1),100),color='red',fontsize=10,linespacing=1.5,ha='center')
 
     # ALT-text
     ALT = 1
