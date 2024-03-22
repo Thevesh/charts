@@ -49,7 +49,7 @@ def heatmap():
         print(ax.get_title())
         for i in range(len(df)): print(f'{df.index[i]}: {df["Male (M)"].iloc[i]:.1f}% for male, {df["Female (F)"].iloc[i]:.1f}% for female')
         
-    plt.savefig(f'heatmap.png',dpi=400)
+    plt.savefig(f'heatmap.png',dpi=400, bbox_inches = 'tight')
     plt.close()
 
 
