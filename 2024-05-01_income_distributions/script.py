@@ -8,23 +8,13 @@ import matplotlib.ticker as tkr
 
 def plot_distribution(
         df = None,
-        COLOUR_UP = 'Greens',
-        COLOUR_DOWN = 'Reds_r',
+        CMAP = 'RdYlGn',
         TITLE_VAR = 'Income',
         TITLE_SCOPE = None, N_TOTAL = None,
         TITLE_CAVEAT = None,
         X_LABEL = '',
         SAVE_AS = ''
 ):
-    if len(df)%2 == 0:
-        col_up = sb.color_palette(COLOUR_UP, n_colors=int(len(df)/2)).as_hex()
-        col_down = sb.color_palette(COLOUR_DOWN, n_colors=int(len(df)/2)).as_hex()
-        SPLIT = int(len(df)/2)
-    else:
-        col_up = sb.color_palette(COLOUR_UP, n_colors=int(len(df)/2)).as_hex()
-        col_down = sb.color_palette(COLOUR_DOWN, n_colors=int(len(df)/2)+1).as_hex()
-        SPLIT = int(len(df)/2) + 1
-
     # plot chart
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
@@ -33,18 +23,15 @@ def plot_distribution(
     plt.rcParams["figure.autolayout"] = True
     fig, ax = plt.subplots()
 
-    df.plot(kind='barh', y=['n'], edgecolor='black', lw=0, ax=ax, legend=False)
-
-    # custom bar colours
-    for i, bar in enumerate(ax.patches):
-        if i < SPLIT: bar.set_color(col_down[i])
-        else: bar.set_color(col_up[i-SPLIT])
+    colourmap = sb.color_palette(CMAP, n_colors=len(df)).as_hex()
+    df.plot(kind='barh', y='n', edgecolor='black', lw=0, ax=ax, color=colourmap)
 
     # plot-wide adjustments
     ax.set_title(f'Monthly {TITLE_VAR} Distribution\nusing {N_TOTAL:,.0f} {TITLE_SCOPE}\n{TITLE_CAVEAT}',linespacing=1.8, fontsize=11)
     for b in ['top','right','left','bottom']: ax.spines[b].set_visible(False)
     ax.tick_params(axis=u'both', which=u'both',length=0)
     ax.set_axisbelow(True)
+    ax.get_legend().remove()
 
     # y-axis adjustments
     ax.set_ylabel('')
@@ -98,7 +85,7 @@ if __name__ == '__main__':
     df.index = ['< 1,000'] + [f'{x*1e3:,.0f} - {(x+1)*1e3-1:,.0f}' for x in range(1,len(df)-1)] + ['> 15,000']
 
     plot_distribution(df=df,
-                    COLOUR_UP = 'Blues',
+                    CMAP = 'RdBu',
                     TITLE_SCOPE = 'LHDN filings in 2022', N_TOTAL=FILINGS,
                     TITLE_CAVEAT = '(note: filings with income = 0 excluded)',
                     X_LABEL = 'Proportion of Tax Filings (%)',
