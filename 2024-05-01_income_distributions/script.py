@@ -29,7 +29,7 @@ def plot_distribution(
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
                         'grid.linestyle': 'dashed'})
-    plt.rcParams["figure.figsize"] = [5,6.5]
+    plt.rcParams["figure.figsize"] = [5,7]
     plt.rcParams["figure.autolayout"] = True
     fig, ax = plt.subplots()
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     df.loc[df.income > 20,'income'] = 20
     df = df.groupby('income').sum()
     df['n'] = df['n']/df['n'].sum() * 100
-    df.index = ['< 1,000'] + [f'{x*1e3:,.0f} - {(x+1)*1e3:,.0f}' for x in range(1,len(df)-1)] + ['> 20,000']
+    df.index = ['< 1,000'] + [f'{x*1e3:,.0f} - {(x+1)*1e3-1:,.0f}' for x in range(1,len(df)-1)] + ['> 19,000']
 
     plot_distribution(df=df,
                     TITLE_SCOPE = 'households in 2022', N_TOTAL=HOUSEHOLDS,
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     df.loc[df.value > 15,'value'] = 15
     df = df.groupby('value').sum()
     df['n'] = df['n']/df['n'].sum() * 100
-    df.index = ['< 1,000'] + [f'{x*1e3:,.0f} - {(x+1)*1e3:,.0f}' for x in range(1,len(df)-1)] + ['> 15,000']
+    df.index = ['< 1,000'] + [f'{x*1e3:,.0f} - {(x+1)*1e3-1:,.0f}' for x in range(1,len(df)-1)] + ['> 15,000']
 
     plot_distribution(df=df,
                     COLOUR_UP = 'Blues',
