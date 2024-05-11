@@ -20,7 +20,7 @@ def turnout_comparison():
     ax.set_title(f"""Voter Turnout (%) in N.06 Kuala Kubu Baharu\nPRN 2023 vs Today""",linespacing=1.8)
     for b in ['top','right']: ax.spines[b].set_visible(False)
     ax.set_axisbelow(True)
-    ax.legend(bbox_to_anchor=(0.3,0.95))
+    ax.legend(bbox_to_anchor=(0.29,0.94))
 
     # y-axis adjustments
     ax.set_ylim(0)
