@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import seaborn as sb
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta as rd
