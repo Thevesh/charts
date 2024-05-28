@@ -20,7 +20,7 @@ def bar_calon_most():
     pf.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f'SPM 2022: Mata Pelajaran\ndengan Calon Paling Ramai\n(drpd {TOTAL_2022:,.0f} calon baru)\n',linespacing=1.8)
+    ax.set_title(f'SPM 2023: Mata Pelajaran\ndengan Calon Paling Ramai\n(drpd {TOTAL_2023:,.0f} calon baru)\n',linespacing=1.8)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -35,7 +35,7 @@ def bar_calon_most():
     ax.xaxis.grid(False)
     ax.get_xaxis().set_visible(False)
     for c in ax.containers:
-        labels = [f'  {pf[v].iloc[i]:,.0f}  ({pf[v].iloc[i]/TOTAL_2022*100:,.1f}%)' for i in range(len(pf))]
+        labels = [f'  {pf[v].iloc[i]:,.0f}  ({pf[v].iloc[i]/TOTAL_2023*100:,.1f}%)' for i in range(len(pf))]
         ax.bar_label(c, labels=labels,fontsize=10)
 
     # ALT-text
@@ -63,7 +63,7 @@ def bar_calon_least():
     pf.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f'SPM 2022: Mata Pelajaran\ndengan Calon Paling Sedikit\n(drpd {TOTAL_2022:,.0f} calon baru)\n',linespacing=1.8)
+    ax.set_title(f'SPM 2023: Mata Pelajaran\ndengan Calon Paling Sedikit\n(drpd {TOTAL_2023:,.0f} calon baru)\n',linespacing=1.8)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -106,7 +106,7 @@ def bar_results_gagal():
     pf.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f'SPM 2022: Mata Pelajaran\ndengan % Gagal Paling Tinggi\n',linespacing=1.8)
+    ax.set_title(f'SPM 2023: Mata Pelajaran\ndengan % Gagal Paling Tinggi\n',linespacing=1.8)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -149,7 +149,7 @@ def bar_results_a():
     pf.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f'SPM 2022: Mata Pelajaran\ndengan % A+/A/A- Paling Tinggi\n(sekurangnya 10,000 calon)\n',linespacing=1.8)
+    ax.set_title(f'SPM 2023: Mata Pelajaran\ndengan % A+/A/A- Paling Tinggi\n(sekurangnya 10,000 calon)\n',linespacing=1.8)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -193,7 +193,7 @@ def bar_results_a_bahasa():
 
     # plot-wide adjustments
     SPACE = '                  '
-    ax.set_title(f'{SPACE}SPM 2022: Mata Pelajaran Bahasa\n{SPACE}dengan % A+/A/A- Paling Tinggi\n',linespacing=1.8)
+    ax.set_title(f'{SPACE}SPM 2023: Mata Pelajaran Bahasa\n{SPACE}dengan % A+/A/A- Paling Tinggi\n',linespacing=1.8)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -225,13 +225,13 @@ def bar_results_a_bahasa():
 CURDIR = os.getcwd()
 os.chdir(f'{CURDIR}/2024-01-30_spm/')
 
-TOTAL_2022 = 388832
+TOTAL_2023 = 383685
 
 df = pd.read_excel(f'src.xlsx')
-df = df[df.year == 2022].drop(['year','code'],axis=1).set_index('subject')
+df = df[df.year == 2023].drop(['year','code'],axis=1).set_index('subject')
 
 print('')
-print(f'{len(df)} subjects and {TOTAL_2022:,} calon in total')
+print(f'{len(df)} subjects and {TOTAL_2023:,} calon in total')
 print('')
 bar_calon_most()
 print('')
