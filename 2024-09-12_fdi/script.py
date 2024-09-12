@@ -26,7 +26,7 @@ def timeseries():
         df.plot(y=v,ax=ax,color=c,marker='o',markersize=3,label=v)
 
     # plot-wide adjustments
-    ax.set_title(f"""Malaysia: Approved vs Realised FDI Inflows (RM bil)""",linespacing=1.8)
+    ax.set_title(f"""Malaysia: Approved vs Realised Gross FDI Inflows (RM bil)""",linespacing=1.8)
     for b in ['top','right']: ax.spines[b].set_visible(False)
     ax.set_axisbelow(True)
     ax.get_legend().remove()
