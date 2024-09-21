@@ -41,6 +41,7 @@ def bar():
     df.date = df.date.dt.date
     DATE_E = df.date.iloc[-1]
     DATE_S = DATE_E - relativedelta(years=1)
+    DATE_S = date(2024, 1, 1)
     df = df[(df.date >= DATE_S) & (df.date <= DATE_E)].set_index('date')
 
     # create percentage changes relative to first date
@@ -61,7 +62,7 @@ def bar():
 
     n_pos = len(df[df.performance >= 0])
     n_neg = len(df[df.performance < 0])
-    col_pos = sb.color_palette('Greens',n_colors=n_pos*2).as_hex()
+    col_pos = sb.color_palette('Greens',n_colors=n_pos).as_hex()
     col_neg = sb.color_palette('Reds',n_colors=n_neg).as_hex()
     col_neg.reverse()
 
@@ -69,7 +70,7 @@ def bar():
     df.plot(kind='barh', width=0.7, y=v, edgecolor='black', lw=0, color=col_neg+col_pos, ax=ax)
 
     # plot-wide adjustments
-    ax.set_title(f"""Ringgit vs Currencies of Major Trading Partners\n% change from {DATE_S:%d %b %Y} to {DATE_E:%d %b %Y}\n""",linespacing=1.8)
+    ax.set_title(f"""Ringgit vs Currencies of Major Trading Partners\n% change from {DATE_S:%d %b %Y} to {DATE_E:%d %b %Y}\n""",linespacing=1.8,fontsize=11)
     for b in ['top','right','bottom','left']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('grey')
     ax.get_legend().remove()
@@ -83,7 +84,7 @@ def bar():
 
     # x-axis adjustments
     ax.set_xlabel('')
-    ax.set_xlim(-21)
+    # ax.set_xlim(-21)
     ax.xaxis.grid(False)
     ax.get_xaxis().set_visible(False)
     for c in ax.containers:
