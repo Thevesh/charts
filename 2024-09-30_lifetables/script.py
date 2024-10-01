@@ -28,7 +28,8 @@ def timeseries():
     for e,c in zip(ETHNIC,COLOUR):
         for s in SEX:
             MARK = 'o' if s == 'female' else 'x'
-            dfs[s].plot(y=e,ax=ax,color=c,marker=MARK,markersize=3,lw=1,label=f'{e.title()} ({s.title()})')
+            MARKERSIZE = 3 if s == 'female' else 4
+            dfs[s].plot(y=e,ax=ax,color=c,marker=MARK,markersize=MARKERSIZE,lw=1,label=f'{e.title()} ({s.title()})')
 
     # plot-wide adjustments
     ax.set_title(f"""Malaysia: Life Expectancy at Birth (1970-2024)\n\n""")
