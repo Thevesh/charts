@@ -35,7 +35,7 @@ def lorenz_income():
         getattr(ax, f'{axis}axis').grid(True, alpha=0.2)
         getattr(ax, f'set_{axis}lim')(0, 101)
         if axis == 'x':
-            getattr(ax, f'set_{axis}ticks')(np.concatenate([np.arange(0, 101, 10), [85]]))
+            getattr(ax, f'set_{axis}ticks')(np.concatenate([np.arange(0, 101, 10), [85,95]]))
         else:
             getattr(ax, f'set_{axis}ticks')(np.arange(0, 101, 10))
 
@@ -140,6 +140,7 @@ Additional notes:
 """
 
         print(ALT)
+
 
 if __name__ == '__main__':
     print('')
