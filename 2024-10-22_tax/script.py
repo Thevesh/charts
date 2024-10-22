@@ -4,14 +4,13 @@ import matplotlib.pyplot as plt
 
 
 def lorenz_income():
-    df = pd.read_parquet('https://storage.data.gov.my/dashboards/incometax_interactive.parquet')
-    df = df[(df.variable == 'income') & (df.state == 'Malaysia') & (df.type == 'all') & (df.age == 'all')][['percentile','value']]
-    df.percentile = df.percentile + 1
-    new_row = pd.DataFrame({'percentile': [0], 'value': [0]})
-    df = pd.concat([new_row, df]).reset_index(drop=True).rename(columns={'value':'tax'})
-    df['tax_cumul'] = df.tax.cumsum()
-    df['perc_cumul'] = df.tax_cumul / df.tax.sum() * 100
-    df['perc_cumul_inverse'] = 100 - df['perc_cumul']
+    df = pd.read_parquet('https://storage.dosm.gov.my/hies/hies_malaysia_percentile.parquet')
+    df = df[(df.date == df.date.max()) & (df.variable == 'mean')][['percentile','income']]
+    new_row = pd.DataFrame({'percentile': [0], 'income': [0]})
+    df = pd.concat([new_row, df]).reset_index(drop=True)
+    for v in ['income']:
+        df[f'{v}_cumul'] = df[v].cumsum()
+        df[f'{v}_cumul_perc'] = (df[f'{v}_cumul'] / df[v].sum() * 100)
 
     plt.rcParams.update({'font.size': 11,
                         'font.family': 'sans-serif',
@@ -21,15 +20,15 @@ def lorenz_income():
     fig, ax = plt.subplots()
 
     # Plot 'perc_cumul' as a line chart
-    df.plot(kind='line',x='percentile',y='perc_cumul',color='black',linewidth=1,marker='o',markersize=3,ax=ax,zorder=2)
-    ax.set_title('Malaysia: Distribution of Income Declared by Individuals\n(estimated from percentile-resolution data for 2022)',linespacing=1.8)
+    df.plot(kind='line',x='percentile',y='income_cumul_perc',color='black',linewidth=1,marker='o',markersize=3,ax=ax,zorder=2)
+    ax.set_title('Malaysia: Distribution of Household Incomes\n(estimated from percentile-resolution data for 2022)',linespacing=1.8)
     ax.legend_.remove()
     for s in ['top','right']: ax.spines[s].set_visible(False)
     for spine in ax.spines.values(): spine.set_color('#d3d3d3')
 
     # axis adjustments
     ax.set_ylabel(f'% of Income\n',linespacing=0.8)
-    ax.set_xlabel('\n% of Taxpayers',linespacing=0.8)
+    ax.set_xlabel('\n% of Households',linespacing=0.8)
     for axis in ['x', 'y']:
         ax.tick_params(axis=axis, which='both', length=0)
         getattr(ax, f'{axis}axis').grid(True, alpha=0.2)
@@ -40,9 +39,9 @@ def lorenz_income():
             getattr(ax, f'set_{axis}ticks')(np.arange(0, 101, 10))
 
     # annotations
-    prop_paid = {85:45, 90:35, 95:23, 99:7}
+    prop_paid = {85:40, 90:30, 95:20, 99:6}
     for p in [85, 90, 95, 99]:
-        y_value = df.iloc[p]['perc_cumul']
+        y_value = df.iloc[p]['income_cumul_perc']
         ax.plot([0, p], [y_value, y_value], linewidth=1, alpha=0.7, color='red', zorder=1)
         ax.plot([p, p], [y_value, 0], linewidth=1, alpha=0.7, color='red', zorder=1)
 
@@ -50,12 +49,7 @@ def lorenz_income():
                     xy=(p-37, y_value), 
                     xytext=(p-37, y_value+2),
                     color='red',fontsize=10,va='center',ha='left')
-
-    # # clarification note
-    ax.text(0.03,0.25, """Data covers 4.2 mil tax filings only. 
-    >50% of workers did not declare their income.""",
-    fontstyle='italic',fontsize=8.5, linespacing=1.5, transform=ax.transAxes);
-
+        
     plt.savefig('lorenz_income.webp',dpi=400)
     plt.close()
 
@@ -145,6 +139,6 @@ Additional notes:
 if __name__ == '__main__':
     print('')
     lorenz_income()
-    print('')
-    lorenz_tax()
+    # print('')
+    # lorenz_tax()
     print('')
