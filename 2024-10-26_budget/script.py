@@ -37,7 +37,7 @@ def timeseries(SCALED=0):
 
     # plot-wide adjustments
     if SCALED == 0:
-        ax.set_title(f"Malaysia: Annual Announced Budget\n(1972-2025)",linespacing=1.8)
+        ax.set_title(f"Malaysia: Annual Budget Announced\nin Parliament (1972-2025)",linespacing=1.8)
     else:
         ax.set_title(f"""Malaysia: Annual Announced Budget\nas % of Nominal GDP (1972-2025)\n(note: 2024-25 uses latest IMF GDP forecasts)""",linespacing=1.8)
     for b in ['top','right']: ax.spines[b].set_visible(False)
