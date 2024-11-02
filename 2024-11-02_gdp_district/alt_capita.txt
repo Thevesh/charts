@@ -1,0 +1,185 @@
+GDP per Capita by District (2019)
+(note: 2020 not used to avoid pandemic distortion)
+
+Data for Perlis:
+Perlis: 25,513.4
+
+Data for Kedah:
+Kulim: 33,401.9
+Kota Setar: 28,681.4
+Langkawi: 28,387.8
+Pokok Sena: 28,068.5
+Kuala Muda: 23,600.1
+Kubang Pasu: 15,277.7
+Bandar Baharu: 14,331.2
+Padang Terap: 13,449.0
+Pendang: 12,576.7
+Baling: 10,829.4
+Yan: 10,143.0
+Sik: 8,111.4
+
+Data for Sabah:
+Kota Kinabalu: 42,419.2
+Beluran: 24,374.0
+Lahad Datu: 19,573.0
+Sandakan: 17,616.6
+Tawau: 16,759.6
+Kinabatangan: 15,531.3
+Penampang: 13,852.3
+Telupid: 12,821.4
+Sipitang: 12,807.0
+Tuaran: 11,572.0
+Semporna: 11,089.7
+Beaufort: 10,324.3
+Papar: 9,449.4
+Kunak: 9,417.0
+Nabawan: 9,288.9
+Kalabakan: 9,184.1
+Kudat: 8,533.2
+Kota Marudu: 8,407.2
+Putatan: 7,971.6
+Keningau: 7,347.6
+Kuala Penyu: 7,339.6
+Ranau: 7,157.7
+Pitas: 7,102.6
+Kota Belud: 6,679.5
+Tenom: 6,284.8
+Tongod: 4,534.0
+Tambunan: 4,017.1
+
+Data for Perak:
+Kinta: 45,509.2
+Bagan Datuk: 42,257.2
+Manjung: 38,270.4
+Muallim: 33,821.3
+Hilir Perak: 27,813.0
+Batang Padang: 24,139.4
+Larut Dan Matang: 22,879.7
+Kampar: 22,700.2
+Perak Tengah: 21,081.3
+Kuala Kangsar: 19,775.6
+Kerian: 18,060.3
+Selama: 15,611.5
+Hulu Perak: 14,247.1
+
+Data for Johor:
+Johor Bahru: 45,818.1
+Kulai: 40,275.0
+Kota Tinggi: 38,028.4
+Tangkak: 34,258.3
+Batu Pahat: 32,405.4
+Muar: 27,977.7
+Kluang: 27,838.3
+Pontian: 26,401.1
+Mersing: 25,613.9
+Segamat: 25,158.1
+
+Data for Melaka:
+Alor Gajah: 54,200.9
+Melaka Tengah: 53,801.2
+Jasin: 24,877.8
+
+Data for Kelantan:
+Kecil Lojing: 74,318.8
+Kota Bharu: 18,690.8
+Gua Musang: 17,643.8
+Jeli: 14,858.4
+Tanah Merah: 14,585.1
+Machang: 13,122.6
+Bachok: 12,262.4
+Kuala Krai: 12,011.5
+Pasir Puteh: 11,076.7
+Pasir Mas: 8,622.8
+Tumpat: 8,300.0
+
+Data for Negeri Sembilan:
+Port Dickson: 75,150.3
+Seremban: 51,472.8
+Jempol: 27,811.6
+Tampin: 26,401.3
+Jelebu: 25,991.7
+Rembau: 25,187.7
+Kuala Pilah: 23,719.2
+
+Data for Pahang:
+Cameron Highlands: 80,486.0
+Bentong: 68,480.6
+Kuantan: 48,537.3
+Pekan: 35,514.3
+Rompin: 30,220.9
+Temerloh: 23,944.0
+Lipis: 22,896.9
+Jerantut: 22,483.2
+Raub: 22,018.2
+Bera: 19,713.8
+Maran: 15,483.3
+
+Data for Selangor:
+Petaling: 85,184.0
+Sepang: 65,240.2
+Klang: 52,368.9
+Ulu Selangor: 43,223.0
+Kuala Langat: 41,094.6
+Gombak: 36,583.7
+Ulu Langat: 32,627.8
+Kuala Selangor: 23,184.9
+Sabak Bernam: 19,481.0
+
+Data for Terengganu:
+Kemaman: 98,843.9
+Kuala Terengganu: 25,313.8
+Dungun: 18,904.3
+Hulu Terengganu: 16,147.4
+Setiu: 14,205.1
+Marang: 14,197.5
+Besut: 13,435.0
+Kuala Nerus: 10,572.5
+
+Data for Pulau Pinang:
+Barat Daya: 120,902.0
+Seberang Perai Tengah: 66,774.2
+Seberang Perai Selatan: 42,736.0
+Timur Laut: 41,676.3
+Seberang Perai Utara: 25,498.9
+
+Data for Sarawak:
+Bintulu: 236,437.1
+Mukah: 55,382.3
+Belaga: 42,781.3
+Kuching: 42,426.7
+Miri: 42,402.3
+Sibu: 34,982.9
+Kapit: 26,550.8
+Daro: 21,879.8
+Marudi: 20,118.6
+Matu: 19,258.9
+Samarahan: 18,693.9
+Dalat: 18,035.7
+Beluru: 16,783.7
+Betong: 15,822.2
+Tanjung Manis: 15,714.9
+Sarikei: 15,492.9
+Lundu: 15,161.4
+Sebauh: 14,268.8
+Saratok: 14,139.0
+Subis: 13,428.2
+Serian: 12,252.4
+Tatau: 11,940.9
+Simunjan: 11,642.0
+Kanowit: 11,090.9
+Sri Aman: 10,751.3
+Limbang: 9,108.4
+Bau: 8,941.0
+Selangau: 8,680.4
+Lawas: 8,655.6
+Song: 8,483.7
+Lubok Antu: 8,156.6
+Asajaya: 7,383.6
+Julau: 5,580.1
+Maradong: 5,134.4
+Telang Usan: 4,209.8
+Bukit Mabong: 3,815.8
+Pakan: 3,752.4
+Pusa: 3,147.1
+Kabong: 3,038.7
+Tebedu: 2,755.6

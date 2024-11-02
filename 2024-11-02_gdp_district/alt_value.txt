@@ -1,0 +1,185 @@
+GDP by District in RM billions (2019)
+(note: 2020 not used to avoid pandemic distortion)
+
+Data for Perlis:
+Perlis: 6.2
+
+Data for Kelantan:
+Kota Bharu: 10.6
+Tanah Merah: 2.1
+Pasir Mas: 1.9
+Bachok: 1.8
+Gua Musang: 1.7
+Kuala Krai: 1.5
+Pasir Puteh: 1.5
+Tumpat: 1.5
+Machang: 1.4
+Kecil Lojing: 0.8
+Jeli: 0.7
+
+Data for Kedah:
+Kuala Muda: 11.5
+Kota Setar: 11.2
+Kulim: 10.5
+Kubang Pasu: 3.6
+Langkawi: 2.9
+Baling: 1.5
+Pokok Sena: 1.4
+Pendang: 1.3
+Padang Terap: 0.9
+Yan: 0.8
+Bandar Baharu: 0.6
+Sik: 0.6
+
+Data for Terengganu:
+Kemaman: 19.0
+Kuala Terengganu: 6.2
+Dungun: 3.3
+Besut: 2.2
+Marang: 1.6
+Kuala Nerus: 1.5
+Hulu Terengganu: 1.3
+Setiu: 0.9
+
+Data for Sabah:
+Kota Kinabalu: 22.5
+Sandakan: 8.6
+Tawau: 7.1
+Lahad Datu: 4.9
+Kinabatangan: 2.9
+Penampang: 2.0
+Beluran: 1.9
+Semporna: 1.7
+Keningau: 1.5
+Papar: 1.5
+Tuaran: 1.4
+Beaufort: 0.8
+Kudat: 0.8
+Ranau: 0.8
+Kunak: 0.7
+Kota Belud: 0.7
+Kota Marudu: 0.6
+Telupid: 0.6
+Sipitang: 0.5
+Putatan: 0.5
+Kalabakan: 0.5
+Tenom: 0.4
+Nabawan: 0.3
+Pitas: 0.3
+Tongod: 0.2
+Kuala Penyu: 0.2
+Tambunan: 0.2
+
+Data for Pahang:
+Kuantan: 24.1
+Bentong: 8.6
+Pekan: 4.4
+Temerloh: 4.1
+Rompin: 3.7
+Cameron Highlands: 3.3
+Jerantut: 2.1
+Raub: 2.1
+Bera: 2.0
+Lipis: 2.0
+Maran: 1.9
+
+Data for Pulau Pinang:
+Barat Daya: 27.8
+Seberang Perai Tengah: 27.8
+Timur Laut: 22.8
+Seberang Perai Utara: 8.2
+Seberang Perai Selatan: 8.0
+
+Data for Melaka:
+Melaka Tengah: 28.6
+Alor Gajah: 11.4
+Jasin: 3.6
+
+Data for Negeri Sembilan:
+Seremban: 30.1
+Port Dickson: 8.2
+Jempol: 3.5
+Tampin: 2.3
+Kuala Pilah: 1.6
+Rembau: 1.2
+Jelebu: 1.1
+
+Data for Perak:
+Kinta: 35.2
+Manjung: 9.1
+Larut Dan Matang: 6.7
+Hilir Perak: 4.0
+Kerian: 3.3
+Kuala Kangsar: 3.3
+Bagan Datuk: 2.9
+Batang Padang: 2.8
+Perak Tengah: 2.3
+Muallim: 2.3
+Kampar: 2.2
+Hulu Perak: 1.4
+Selama: 0.6
+
+Data for Sarawak:
+Bintulu: 38.7
+Kuching: 28.1
+Miri: 11.3
+Sibu: 9.3
+Mukah: 2.7
+Belaga: 1.9
+Samarahan: 1.8
+Kapit: 1.7
+Sarikei: 1.0
+Serian: 0.9
+Subis: 0.9
+Sri Aman: 0.8
+Betong: 0.8
+Lundu: 0.6
+Simunjan: 0.5
+Bau: 0.5
+Daro: 0.5
+Limbang: 0.5
+Marudi: 0.5
+Beluru: 0.4
+Tatau: 0.4
+Sebauh: 0.4
+Saratok: 0.4
+Kanowit: 0.4
+Dalat: 0.4
+Matu: 0.4
+Lawas: 0.4
+Asajaya: 0.3
+Song: 0.3
+Lubok Antu: 0.3
+Selangau: 0.2
+Maradong: 0.2
+Tanjung Manis: 0.2
+Julau: 0.1
+Telang Usan: 0.1
+Pusa: 0.1
+Bukit Mabong: 0.1
+Tebedu: 0.1
+Pakan: 0.1
+Kabong: 0.1
+
+Data for Johor:
+Johor Bahru: 68.3
+Batu Pahat: 14.5
+Kulai: 11.0
+Kluang: 9.0
+Kota Tinggi: 7.7
+Muar: 7.4
+Tangkak: 5.1
+Segamat: 5.1
+Pontian: 4.3
+Mersing: 1.9
+
+Data for Selangor:
+Petaling: 176.4
+Klang: 51.3
+Ulu Langat: 43.3
+Gombak: 28.8
+Sepang: 16.0
+Ulu Selangor: 10.7
+Kuala Langat: 10.7
+Kuala Selangor: 5.5
+Sabak Bernam: 2.3

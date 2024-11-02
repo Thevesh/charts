@@ -72,12 +72,14 @@ def scatter(VAR_PLOT='value'):
     # ALT text
     ALT = 1
     if ALT == 1:
-        print(ax.get_title().strip())
-        for p in PLOT:
-            print(f'\nData for {p}:')
-            state_districts = df[df.index == p].sort_values(by=VAR_PLOT, ascending=False)
-            for _, district in state_districts.iterrows():
-                print(f"{district.district}: {district[VAR_PLOT]:,.1f}")
+        filename = 'alt_capita.txt' if VAR_PLOT == 'capita' else 'alt_value.txt'
+        with open(filename, 'w') as f:
+            f.write(ax.get_title().strip() + '\n')
+            for p in PLOT:
+                f.write(f'\nData for {p}:\n')
+                state_districts = df[df.index == p].sort_values(by=VAR_PLOT, ascending=False)
+                for _, district in state_districts.iterrows():
+                    f.write(f"{district.district}: {district[VAR_PLOT]:,.1f}\n")
 
 
 if __name__ == '__main__':
