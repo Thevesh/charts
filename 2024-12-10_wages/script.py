@@ -6,7 +6,7 @@ from datetime import datetime
 
 def heatmap():
     df = pd.read_excel('sgu.xlsx')
-    df.age = df.age.fillna(' ')
+    df.age = (df.age.astype(str) + ' ').replace('nan ', '')
     df = df.set_index('age')
 
     sb.set(font="Monospace")
