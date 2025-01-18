@@ -133,11 +133,14 @@ def timeseries_split(tf=None,TITLE=None,SAVE_AS=None):
     plt.close()
 
 
-def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None):
+def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False):
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
                         'grid.linestyle': 'dashed'})
-    plt.rcParams["figure.figsize"] = [9,7]
+    if MILLIONS:
+        plt.rcParams["figure.figsize"] = [11,8]
+    else:
+        plt.rcParams["figure.figsize"] = [9,7]
     plt.rcParams["figure.autolayout"] = True
     fig, ax = plt.subplots(2,2)
     ax = ax.ravel()
@@ -146,7 +149,8 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None):
     for a in range(4):
         SPACE = '' if a < 2 else '\n'
 
-        tf[tf.line == lines_here[a]].set_index('day').plot(kind='bar',y=['2019','2024'], color=['#041f61','orange'],ax=ax[a],legend=False, lw=1)
+        INDEX = 'month' if MILLIONS else 'day'
+        tf[tf.line == lines_here[a]].set_index(INDEX).plot(kind='bar',y=['2019','2024'], color=['#041f61','orange'],ax=ax[a],legend=False, lw=1)
         ax[a].set_title(f'{SPACE}{map_cols[lines_here[a]]}',linespacing=1.8)
 
         for b in ['top','right']: ax[a].spines[b].set_visible(False)
@@ -156,7 +160,10 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None):
         # y-axis adjustments
         ax[a].set_ylabel('',linespacing=0.5)
         ax[a].yaxis.grid(True,alpha=0.3)
-        ax[a].get_yaxis().set_major_formatter(tkr.FuncFormatter(lambda x, p: format(x, ',.0f')))
+        if MILLIONS:
+            ax[a].get_yaxis().set_major_formatter(tkr.FuncFormatter(lambda x, p: format(x/1e6, ',.1f') + ' mil'))
+        else:
+            ax[a].get_yaxis().set_major_formatter(tkr.FuncFormatter(lambda x, p: format(x, ',.0f')))
 
         # x-axis adjustments
         ax[a].set_xlabel('')
@@ -166,7 +173,8 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None):
     plt.suptitle(TITLE,linespacing=1.8)
     bar_blue = plt.Rectangle((0,0), 1, 1, label='2019', color='#041f61')
     bar_orange = plt.Rectangle((0,0), 1, 1, label='2024', color='orange')
-    fig.legend(ncol=2, handles=[bar_blue, bar_orange], bbox_to_anchor=(0.5, 0.9), loc='upper center')
+    LEGEND_VPOS = 0.95 if MILLIONS else 0.9
+    fig.legend(ncol=2, handles=[bar_blue, bar_orange], bbox_to_anchor=(0.5, LEGEND_VPOS), loc='upper center')
 
     plt.savefig(f'{SAVE_AS}.png',dpi=400,bbox_inches='tight')
     plt.close()
@@ -198,7 +206,7 @@ if __name__ == '__main__':
     print('Chart: Monthly avg ridership (combined)')
     timeseries_combined(
         tf=dfmd.set_index('date'),
-        TITLE='Average Daily Ridership on LRT, MRT, Monorail (2019-2024)\n(note: daily avg helps account for diff N of days in each month)',
+        TITLE='Average Daily Ridership on LRT, MRT, & Monorail (2019-2024)\n(note: daily avg helps account for diff N of days in each month)',
         DIVISOR=1e3,
         UNIT='k',
         SAVE_AS='timeseries_combined_monthly_avg'
@@ -207,7 +215,7 @@ if __name__ == '__main__':
     print('Chart: Monthly total ridership (combined)')
     timeseries_combined(
         tf=dfmm.set_index('date'),
-        TITLE='Monthly Ridership on LRT, MRT, Monorail (2019-2024)\n(note: different N of days in months leads to fluctuations)',
+        TITLE='Monthly Ridership on LRT, MRT, & Monorail (2019-2024)\n(note: different N of days in months leads to fluctuations)',
         DIVISOR=1e6,
         UNIT='mil',
         SAVE_AS='timeseries_combined_monthly_total'
@@ -224,14 +232,14 @@ if __name__ == '__main__':
     print('Chart: Monthly total ridership (split view)')
     timeseries_split(
         tf=dfmm.set_index('date')/1e6,
-        TITLE='Monthly Ridership (millions) on LRT, MRT, Monorail (2019-2024)',
+        TITLE='Monthly Ridership (millions) on LRT, MRT, & Monorail (2019-2024)',
         SAVE_AS='timeseries_split_monthly'
     )
 
     print('Chart: Annual total ridership (split view)')
     timeseries_split(
         tf=dfy.set_index('date')/1e6,
-        TITLE='Annual Ridership (millions) on LRT, MRT, Monorail (2019-2024)',
+        TITLE='Annual Ridership (millions) on LRT, MRT, & Monorail (2019-2024)',
         SAVE_AS='timeseries_split_annual'
     )
 
@@ -255,11 +263,19 @@ if __name__ == '__main__':
     dfwc['day'] = dfwc.day.map(map_dow)
     for c in ['2019','2024']: dfwc[c] = dfwc[c].astype(int) # FINAL: Ridership by day of week in 2019 vs 2024
 
-    print('Chart: Ridership by day of week (2019-2024)')
+    print('Chart: Ridership by day of week (2019 vs 2024)')
     bar_day_of_week(
         tf=dfwc,
-        TITLE='Average Daily LRT, MRT, & Monorail Ridership\nby Day of Week (2019-2024)\n',
+        TITLE='Average Daily LRT, MRT, & Monorail Ridership\nby Day of Week\n',
         SAVE_AS='bar_dow'
+    )
+
+    print('Chart: Ridership by month (2019 vs 2024)')
+    bar_day_of_week(
+        tf=dfmc,
+        TITLE='LRT, MRT, & Monorail Ridership by Month\n',
+        SAVE_AS='bar_month',
+        MILLIONS=True
     )
 
     print('')
