@@ -10,8 +10,6 @@ def top3(CHART_TYPE='cumulative'):
     TARGET_MAKERS = ['BYD','TESLA','BMW']
 
     df = pd.concat([
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2022.parquet'),
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2023.parquet'),
         pd.read_parquet('https://storage.data.gov.my/transportation/cars_2024.parquet')
     ],axis=0,ignore_index=True).rename(columns={'date_reg':'date'})
     df = df[(df.fuel == 'electric') & (df.maker.isin(TARGET_MAKERS))]
@@ -70,10 +68,8 @@ def top3(CHART_TYPE='cumulative'):
     plt.close()
 
 
-def bar_fueltype(START_YEAR=2022):
+def bar_fueltype(START_YEAR=2024):
     df = pd.concat([
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2022.parquet'),
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2023.parquet'),
         pd.read_parquet('https://storage.data.gov.my/transportation/cars_2024.parquet')
     ],axis=0,ignore_index=True).rename(columns={'date_reg':'date'})
     df = df[df.date >= date(START_YEAR,1,1)]
@@ -125,10 +121,6 @@ def bar_fueltype(START_YEAR=2022):
 
 def bar_fueltype_top15(FUEL_TYPE='Hybrid',COLOUR='Blues'):
     df = pd.concat([
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2020.parquet'),
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2021.parquet'),
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2022.parquet'),
-        pd.read_parquet('https://storage.data.gov.my/transportation/cars_2023.parquet'),
         pd.read_parquet('https://storage.data.gov.my/transportation/cars_2024.parquet')
     ],axis=0,ignore_index=True).rename(columns={'date_reg':'date'})
     map_type = {'hybrid_petrol':'hybrid','hybrid_diesel':'hybrid','greendiesel_ng':'green diesel','petrol_ng':'petrol','other':'hybrid','greendiesel':'green diesel'}
@@ -185,8 +177,8 @@ def bar_fueltype_top15(FUEL_TYPE='Hybrid',COLOUR='Blues'):
 
 
 if __name__ == '__main__':
-    top3(CHART_TYPE='cumulative')
-    top3(CHART_TYPE='monthly')
-    bar_fueltype(START_YEAR=2022)
+    # top3(CHART_TYPE='cumulative')
+    # top3(CHART_TYPE='monthly')
+    bar_fueltype(START_YEAR=2024)
     bar_fueltype_top15(FUEL_TYPE='Hybrid',COLOUR='Blues')
     bar_fueltype_top15(FUEL_TYPE='Electric',COLOUR='Greens')
