@@ -170,11 +170,11 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False):
         ax[a].xaxis.grid(True,alpha=0.3)
         ax[a].tick_params(axis='x', rotation=0)
 
+    LEGEND_UNIT = '' if MILLIONS else ' avg'
     plt.suptitle(TITLE,linespacing=1.8)
-    bar_blue = plt.Rectangle((0,0), 1, 1, label='2019', color='#041f61')
-    bar_orange = plt.Rectangle((0,0), 1, 1, label='2024', color='orange')
-    LEGEND_VPOS = 0.95 if MILLIONS else 0.9
-    fig.legend(ncol=2, handles=[bar_blue, bar_orange], bbox_to_anchor=(0.5, LEGEND_VPOS), loc='upper center')
+    bar_blue = plt.Rectangle((0,0), 1, 1, label=f'2019 {LEGEND_UNIT}', color='#041f61')
+    bar_orange = plt.Rectangle((0,0), 1, 1, label=f'2024 {LEGEND_UNIT}', color='orange')
+    fig.legend(ncol=2, handles=[bar_blue, bar_orange], bbox_to_anchor=(0.5, 0.95), loc='upper center')
 
     plt.savefig(f'{SAVE_AS}.png',dpi=400,bbox_inches='tight')
     plt.close()
@@ -247,6 +247,7 @@ if __name__ == '__main__':
 
     print('\nProcessing bar chart data')
     dfmc = dfmm[dfmm.date.dt.year.isin([2019,2024])].drop('rail_mrt_pjy',axis=1)
+    dfmc = dfmc[~dfmc.date.astype(str).str.contains('02-29')].copy().fillna(0)
     dfmc['year'] = dfmc.date.dt.year.astype(str)
     dfmc = dfmc.melt(id_vars=['year','date'],value_vars=[x for x in lines if 'pjy' not in x],var_name='line',value_name='ridership')
     dfmc['date'] = dfmc.date.dt.strftime('%m')
@@ -266,7 +267,7 @@ if __name__ == '__main__':
     print('Chart: Ridership by day of week (2019 vs 2024)')
     bar_day_of_week(
         tf=dfwc,
-        TITLE='Average Daily LRT, MRT, & Monorail Ridership\nby Day of Week\n',
+        TITLE='LRT, MRT, & Monorail Ridership by Day of Week\n',
         SAVE_AS='bar_dow'
     )
 
