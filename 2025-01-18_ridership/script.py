@@ -133,7 +133,7 @@ def timeseries_split(tf=None,TITLE=None,SAVE_AS=None):
     plt.close()
 
 
-def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False):
+def bar(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False,BASE_YEAR=2019,COMP_YEAR=2024):
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
                         'grid.linestyle': 'dashed'})
@@ -145,12 +145,12 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False):
     fig, ax = plt.subplots(2,2)
     ax = ax.ravel()
 
-    lines_here = ['rail_lrt_kj','rail_lrt_ampang','rail_mrt_kajang','rail_monorail']
+    lines_here = ['rail_lrt_kj','rail_lrt_ampang','rail_mrt_kajang','rail_mrt_pjy']
     for a in range(4):
         SPACE = '' if a < 2 else '\n'
 
         INDEX = 'month' if MILLIONS else 'day'
-        tf[tf.line == lines_here[a]].set_index(INDEX).plot(kind='bar',y=['2019','2024'], color=['#041f61','orange'],ax=ax[a],legend=False, lw=1)
+        tf[tf.line == lines_here[a]].set_index(INDEX).plot(kind='bar',y=[f'{BASE_YEAR}',f'{COMP_YEAR}'], color=['#041f61','orange'],ax=ax[a],legend=False, lw=1)
         ax[a].set_title(f'{SPACE}{map_cols[lines_here[a]]}',linespacing=1.8)
 
         for b in ['top','right']: ax[a].spines[b].set_visible(False)
@@ -172,8 +172,8 @@ def bar_day_of_week(tf=None,TITLE=None,SAVE_AS=None,MILLIONS=False):
 
     LEGEND_UNIT = '' if MILLIONS else ' avg'
     plt.suptitle(TITLE,linespacing=1.8)
-    bar_blue = plt.Rectangle((0,0), 1, 1, label=f'2019 {LEGEND_UNIT}', color='#041f61')
-    bar_orange = plt.Rectangle((0,0), 1, 1, label=f'2024 {LEGEND_UNIT}', color='orange')
+    bar_blue = plt.Rectangle((0,0), 1, 1, label=f'{BASE_YEAR} {LEGEND_UNIT}', color='#041f61')
+    bar_orange = plt.Rectangle((0,0), 1, 1, label=f'{COMP_YEAR} {LEGEND_UNIT}', color='orange')
     fig.legend(ncol=2, handles=[bar_blue, bar_orange], bbox_to_anchor=(0.5, 0.95), loc='upper center')
 
     plt.savefig(f'{SAVE_AS}.png',dpi=400,bbox_inches='tight')
@@ -245,38 +245,46 @@ if __name__ == '__main__':
 
     # --------- Bar charts for analysis ---------
 
+    BAR_BASE = 2023
+    BAR_FOCUS = 2024
+    BAR_DROP = 'rail_monorail'
+
     print('\nProcessing bar chart data')
-    dfmc = dfmm[dfmm.date.dt.year.isin([2019,2024])].drop('rail_mrt_pjy',axis=1)
+    dfmc = dfmm[dfmm.date.dt.year.isin([BAR_BASE,BAR_FOCUS])].drop(BAR_DROP,axis=1)
     dfmc = dfmc[~dfmc.date.astype(str).str.contains('02-29')].copy().fillna(0)
     dfmc['year'] = dfmc.date.dt.year.astype(str)
-    dfmc = dfmc.melt(id_vars=['year','date'],value_vars=[x for x in lines if 'pjy' not in x],var_name='line',value_name='ridership')
+    dfmc = dfmc.melt(id_vars=['year','date'],value_vars=[x for x in lines if x != BAR_DROP],var_name='line',value_name='ridership')
     dfmc['date'] = dfmc.date.dt.strftime('%m')
     dfmc = dfmc.pivot_table(index=['line','date'],columns='year',values='ridership').reset_index().rename(columns={'date':'month'})
     dfmc['month'] = dfmc.month.map(map_month)
-    for c in ['2019','2024']: dfmc[c] = dfmc[c].astype(int) # FINAL: Ridership by month in 2019 vs 2024
+    for c in [f'{BAR_BASE}',f'{BAR_FOCUS}']: dfmc[c] = dfmc[c].astype(int) # FINAL: Ridership by month in 2019 vs 2024
 
-    dfwc = df[df.date.dt.year.isin([2019,2024])].copy().fillna(0).drop('rail_mrt_pjy',axis=1)
+    dfwc = df[df.date.dt.year.isin([BAR_BASE,BAR_FOCUS])].copy().fillna(0).drop(BAR_DROP,axis=1)
     dfwc['year'] = dfwc.date.dt.year.astype(str)
     dfwc['date'] = dfwc.date.dt.dayofweek
     dfwc = dfwc.groupby(['year','date']).mean().reset_index()
-    dfwc = dfwc.melt(id_vars=['year','date'],value_vars=[x for x in lines if 'pjy' not in x],var_name='line',value_name='ridership')
+    dfwc = dfwc.melt(id_vars=['year','date'],value_vars=[x for x in lines if x != BAR_DROP],var_name='line',value_name='ridership')
     dfwc = dfwc.pivot(index=['line','date'],columns='year',values='ridership').reset_index().rename(columns={'date':'day'})
     dfwc['day'] = dfwc.day.map(map_dow)
-    for c in ['2019','2024']: dfwc[c] = dfwc[c].astype(int) # FINAL: Ridership by day of week in 2019 vs 2024
+    for c in [f'{BAR_BASE}',f'{BAR_FOCUS}']: dfwc[c] = dfwc[c].astype(int) # FINAL: Ridership by day of week in 2019 vs 2024
 
-    print('Chart: Ridership by day of week (2019 vs 2024)')
-    bar_day_of_week(
+    print(f'Chart: Ridership by day of week ({BAR_BASE} vs {BAR_FOCUS})')
+    bar(
         tf=dfwc,
-        TITLE='LRT, MRT, & Monorail Ridership by Day of Week\n',
-        SAVE_AS='bar_dow'
+        TITLE='LRT & MRT Ridership by Day of Week\n',
+        SAVE_AS='bar_dow',
+        BASE_YEAR=BAR_BASE,
+        COMP_YEAR=BAR_FOCUS
     )
 
-    print('Chart: Ridership by month (2019 vs 2024)')
-    bar_day_of_week(
+    print(f'Chart: Ridership by month ({BAR_BASE} vs {BAR_FOCUS})')
+    bar(
         tf=dfmc,
-        TITLE='LRT, MRT, & Monorail Ridership by Month\n',
+        TITLE='LRT & MRT Ridership by Month\n',
         SAVE_AS='bar_month',
-        MILLIONS=True
+        MILLIONS=True,
+        BASE_YEAR=BAR_BASE,
+        COMP_YEAR=BAR_FOCUS
     )
 
     print('')
