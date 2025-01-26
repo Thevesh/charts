@@ -18,7 +18,7 @@ def timeseries():
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
                         'grid.linestyle': 'dashed'})
-    plt.rcParams["figure.figsize"] = [8.5,7]
+    plt.rcParams["figure.figsize"] = [8,8]
     plt.rcParams["figure.autolayout"] = True
     fig, ax = plt.subplots()
 
