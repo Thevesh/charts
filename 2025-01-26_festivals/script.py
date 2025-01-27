@@ -64,6 +64,7 @@ def timeseries():
     fig.legend(ncol=3, handles=[raya, cny, deepavali], bbox_to_anchor=(0.52, 0.87), loc='upper center')
 
     plt.savefig('timeseries.webp',dpi=400)
+    plt.savefig('timeseries.png',dpi=400)
     plt.close()
 
 
