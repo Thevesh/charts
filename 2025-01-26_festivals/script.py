@@ -28,7 +28,7 @@ def timeseries():
     for v,c in zip(VAR,COLOUR): df[v].plot(y=v,ax=ax,color=c,lw=1.2)
 
     # plot-wide adjustments
-    ax.set_title("Eid al-Fitr, CNY, and Deepavali Dates (1957 - 2077)\nKongsi Raya: 1965-66, 1996-98, 2029-31, 2062-63\n DeepaRaya: 1972-73, 2004-06, 2037-38, 2070-72\n\n",linespacing=2)
+    ax.set_title("Hari Raya, CNY, and Deepavali Dates (1957 - 2077)\nKongsiRaya: 1965-66, 1996-98, 2029-31, 2062-63\nDeepaRaya: 1972-73, 2004-06, 2037-38, 2070-72\n\n",linespacing=2)
     for b in ['top','right']: ax.spines[b].set_visible(False)
     for b in ['left','bottom']: ax.spines[b].set_color('#cccccc')
     ax.set_axisbelow(True)
@@ -50,7 +50,7 @@ def timeseries():
         MAP_YMAX = {1968:0.98, 2000:0.994, 2033:0.98, 2065:0.994}
         ax.axvline(x=y, color='blue', ymin=MAP_YMIN[y], ymax=MAP_YMAX[y], lw=1)
 
-        ax.annotate(f'{y}:\n2x Eid', xy=(y-1, 26), xytext=(y-1, 26),
+        ax.annotate(f'{y}:\n2x Raya', xy=(y-1, 26), xytext=(y-1, 26),
                     color='blue',fontsize=10,va='center',ha='right')
         
     # circles for Kongsi Raya and Deeparaya
@@ -58,10 +58,10 @@ def timeseries():
     for y in [1965,1998,2030,2063]: ax.plot(y,5, 'o', color='black', markersize=20, mew=1.5, fillstyle='none')
 
     # custom legend
-    eid = Line2D([0], [0], label='Eid al-Fitr',color='blue')
+    raya = Line2D([0], [0], label='Hari Raya',color='blue')
     cny = Line2D([0], [0], label='CNY',color='red')
     deepavali = Line2D([0], [0], label='Deepavali',color='gold')
-    fig.legend(ncol=3, handles=[eid, cny, deepavali], bbox_to_anchor=(0.52, 0.87), loc='upper center')
+    fig.legend(ncol=3, handles=[raya, cny, deepavali], bbox_to_anchor=(0.52, 0.87), loc='upper center')
 
     plt.savefig('timeseries.webp',dpi=400)
     plt.close()
