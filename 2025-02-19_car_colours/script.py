@@ -76,7 +76,7 @@ def stacked_bar(df=None):
 
     print('\nALT text:')
     for c in list(COLOURS.keys()):
-        print(f'{c}: {df.loc[2000,c]:.0f}% in 2000, {df.loc[2024,c]:.1f}% in 2024')
+        print(f'{c}: {df.loc[2000,c]:.1f}% in 2000, {df.loc[2024,c]:.1f}% in 2024')
     
     for ext in ['png','webp']:
         plt.savefig(f'stacked_bar.{ext}',dpi=400,bbox_inches='tight')
