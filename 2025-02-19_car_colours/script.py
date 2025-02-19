@@ -74,7 +74,7 @@ def stacked_bar(df=None):
     # x-axis adjustments
     ax.set_xlabel('')
 
-    print('\nALT text:')
+    print(f'\nALT text:\n{ax.get_title()}')
     for c in list(COLOURS.keys()):
         print(f'{c}: {df.loc[2000,c]:.1f}% in 2000, {df.loc[2024,c]:.1f}% in 2024')
     
