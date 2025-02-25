@@ -9,7 +9,8 @@ def make_data():
     df = pd.DataFrame(columns=['year','colour','cars'])
 
     for i in range(2000,2025):
-        tf = pd.read_parquet(f'https://storage.data.gov.my/transportation/cars_{i}.parquet',columns=['colour']).assign(cars=1)
+        tf = pd.read_parquet(f'https://storage.data.gov.my/transportation/cars_{i}.parquet',columns=['maker','colour']).assign(cars=1)
+        tf = tf[~tf['maker'].isin(['Perodua','Proton'])]
         tf = tf.groupby(['colour']).sum().sort_values(by='cars',ascending=False).reset_index()
         tf['cars'] = tf['cars']/tf['cars'].sum() * 100
         if len(df) == 0:
@@ -57,7 +58,7 @@ def stacked_bar(df=None):
             kind='bar', stacked=True, lw=0.6, edgecolor='#cccccc', width=0.9)
 
     # plot-wide adjustments
-    ax.set_title("Malaysia: Registered Cars by Colour (2000-2024)\n",linespacing=1)
+    ax.set_title("Malaysia: Registered Cars (exc. Perodua & Proton) by Colour (2000-2024)\n",linespacing=1)
     for b in ['top','right','left']: ax.spines[b].set_visible(False)
     for b in ['left','bottom']: ax.spines[b].set_color('#cccccc')
     ax.set_axisbelow(True)
@@ -89,8 +90,8 @@ def stacked_bar(df=None):
 if __name__ == '__main__':
     print(f'Start: {datetime.now():%Y-%m-%d %H:%M:%S}')
 
-    # print(f'\nWrangling from data.gov.my')
-    # make_data()
+    print(f'\nWrangling from data.gov.my')
+    make_data()
 
     print(f'\nTransforming from saved file')
     df = pd.read_parquet('car_colours.parquet')\
