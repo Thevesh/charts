@@ -21,7 +21,7 @@ def timeseries_bar(tf = None):
     tf[tf.date != tf.date.max()].plot(kind='bar',x='date',y='donations',ax=ax,color=list(tf.color)[:-1],edgecolor='none', width=0.88,lw=0.3)
 
     # plot-wide adjustments
-    ax.set_title(f"""Malaysia: Monthly Blood Donations from 2012-2025\n(Ramadan months are plotted in red)\n""",linespacing=1.8)
+    ax.set_title(f"""Malaysia: Pendermaan Darah Bulanan dari 2012-2025\n(Merah = Bulan Ramadan)\n""",linespacing=1.8)
     for b in ['top','right']: ax.spines[b].set_visible(False)
     for b in ['left','bottom']: ax.spines[b].set_color('lightgrey')
     ax.set_axisbelow(True)
