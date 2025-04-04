@@ -102,6 +102,8 @@ def make_bar_by_product(V_HS='hs_2d'):
     # Specifically to help plotting
     df = pd.concat([df[df.index == 'Others'],df[df.index != 'Others']],axis=0)
     df['non-exempt'] = df['non-exempt'].replace(0,0.000001)
+    if V_HS == 'hs_6d': 
+        df.loc[df.index == 'Others', 'non-exempt'] = df.loc[df.index == 'Others', 'non-exempt'] * 0.5
 
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
