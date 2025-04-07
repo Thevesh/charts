@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from datetime import datetime
 
 from matplotlib import pyplot as plt
@@ -35,7 +36,7 @@ def make_us_dataset():
     df.to_parquet('data/trade_us.parquet',index=False,compression='brotli')
 
 
-def make_bar_by_product(V_HS='hs_2d'):
+def make_bar_exports_by_product(V_HS='hs_2d',V='exports'):
     EXEMPT = pd.read_csv('dep/hs_exempt.csv',dtype={'hs':str})['hs'].tolist()
 
     VISUAL_HS = {
@@ -83,8 +84,6 @@ def make_bar_by_product(V_HS='hs_2d'):
             '850440': 'Power Adapters'
         }
     }
-
-    V = 'exports'
 
     df = pd.read_parquet('data/trade_us.parquet').assign(exempt='non-exempt')
     df.loc[df.hs.isin(EXEMPT),'exempt'] = 'exempt'
@@ -309,17 +308,177 @@ def make_bar_topN(V='exports',N=20):
     plt.savefig(f'output/top{N}_{V}.png',dpi=400)
 
 
+def make_bar_tariffs_selected():
+    df = pd.read_csv('data/tariffs_selected.csv').set_index('product').sort_values(by='tariff',ascending=True)
+    df['tariff_log'] = np.log(df.tariff)
+    V = 'tariff_log'
+
+    plt.rcParams.update({'font.size': 10,
+                        'font.family': 'sans-serif',
+                        'grid.linestyle': 'dashed'})
+    plt.rcParams["figure.figsize"] = [6,7]
+    plt.rcParams["figure.autolayout"] = True
+    fig, ax = plt.subplots()
+
+    col_pos = sb.color_palette('Reds', n_colors=len(df)).as_hex()
+    df.plot(kind='barh', width=0.7, y=V, edgecolor='black', lw=0, color=col_pos, ax=ax)
+
+    # plot-wide adjustments
+    SPACE = '     '
+    ax.set_title(f"{SPACE}Msia: Selected Tariffs on US Imports\nBased on Perintah Duti Kastam 2022",linespacing=1.8,fontsize=11)
+    for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
+    ax.spines['left'].set_color('#cccccc')
+    ax.get_legend().remove()
+    ax.set_axisbelow(True)
+    ax.tick_params(axis=u'both', which=u'both',length=0)
+
+    # y-axis adjustments
+    ax.set_ylabel('')
+    plt.yticks(rotation=0, va='center')
+
+    # x-axis adjustments
+    ax.set_xlabel('')
+    ax.xaxis.grid(False)
+    ax.get_xaxis().set_visible(False)
+    for c in ax.containers:
+        labels = [f"  {df[V.replace('_log','')].iloc[i]:,.0f}%" for i in range(len(df))]
+        ax.bar_label(c, labels=labels,fontsize=10)
+
+    # print chart title
+    print('\nALT text:')
+    print(ax.get_title().replace(SPACE,''))
+    for i in range(len(df)):
+        print(f"{df.index[len(df)-i-1]}: {df[V.replace('_log','')].iloc[len(df)-i-1]:,.0f}%")
+    print('')
+
+    plt.savefig(f'output/tariffs_us_selected.png',dpi=400)
+
+
+def make_bar_imports_by_product():
+    VISUAL_HS = {
+        'hs_2d': {
+            '85': 'Electrical Machinery',
+            '84': 'Mechanical Machinery',
+            '88': 'Aircraft & Spacecraft',
+            '27': 'Mineral Fuels & Oils',
+            '90': 'Optical Instruments',
+            '76': 'Aluminium Products',
+            '39': 'Plastics',
+            '47': 'Pulp',
+            '74': 'Copper',
+            '38': 'Chemicals (Misc)',
+            '28': 'Inorganic Chemicals',
+            '30': 'Pharmaceuticals',
+            '12': 'Seeds & Nuts',
+            '73': 'Iron & Steel',
+            '21': 'Edibles (Misc)',
+            '69': 'Ceramics',
+            '04': 'Dairy, Eggs, Honey',
+            '33': 'Perfumes & Cosmetics',
+            '87': 'Vehicles',
+            '29': 'Organic Chemicals'
+        }
+    }
+
+    df = pd.read_parquet('data/trade_us.parquet',columns=['hs','imports'])
+    df.hs = df.hs.str[:6]
+    df = df.groupby('hs').sum(numeric_only=True).reset_index()
+
+    tf = pd.read_csv('data/tariffs_wits.csv')
+    tf['hs'] = tf['product'].str[:6]
+    assert len(tf) == len(tf.hs.unique()), 'Tariff file has duplicate HS codes'
+    MAP_HS_TARIFF = dict(zip(tf.hs,tf.rate_applied))
+
+    TARIFFED = tf[tf.rate_applied > 0].hs.tolist()
+    NO_DATA = [x for x in TARIFFED if x not in df.hs.tolist()]
+
+    df['tariff'] = df.hs.map(MAP_HS_TARIFF).fillna(0)
+    WEIGHTED_TARIFF = (df.imports * df.tariff).sum() / df.imports.sum()
+    TARIFFED_GOODS = len(df[df.tariff > 0])
+    FREE_GOODS = len(df[df.tariff == 0])
+    TOTAL_GOODS = len(df)
+    df.loc[df.tariff > 0, 'tariff'] = 1
+    df.tariff = df.tariff.astype(int)
+    df.hs = df.hs.str[:2]
+
+    df = df.groupby(['hs','tariff']).sum(numeric_only=True).reset_index()
+    df = df.pivot(index='hs',columns='tariff',values='imports').fillna(0).astype(int).reset_index()\
+        .rename(columns={0:'free',1:'tariffed'})
+    df['total'] = df['free'] + df['tariffed']
+    df['total_perc'] = df['total']/df['total'].sum() * 100
+    df.tariffed = df.tariffed.replace(0,0.000001)
+
+    df.hs = df.hs.map(VISUAL_HS['hs_2d']).fillna('Others')
+    df = df.groupby('hs').sum(numeric_only=True).sort_values(by='total',ascending=True)
+
+    plt.rcParams.update({'font.size': 10,
+                        'font.family': 'sans-serif',
+                        'grid.linestyle': 'dashed'})
+    plt.rcParams["figure.figsize"] = [6,7]
+    plt.rcParams["figure.autolayout"] = True
+    fig, ax = plt.subplots()
+
+    SPACE = '     '
+    COL_GREEN = '#2ECC40'  # A bright, accessible green
+    COL_RED = '#FF4136'    # A bright, accessible red
+    df.plot(kind='barh', width=0.7, y=['free', 'tariffed'], stacked=True, edgecolor='black', lw=0, color=[COL_GREEN, COL_RED], ax=ax)
+
+    # plot-wide adjustments
+    ax.set_title(f"""{SPACE}Msia: Imports from USA at 6D HS level
+    {SPACE}from Feb 2024 to Jan 2025
+    {SPACE}Tariffed: {TARIFFED_GOODS} out of {TOTAL_GOODS} products
+    {SPACE}Effective tariff rate: {WEIGHTED_TARIFF:.1f}%""",linespacing=2,fontsize=11)
+    for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
+    ax.spines['left'].set_color('#cccccc')
+    ax.get_legend().remove()
+    ax.set_axisbelow(True)
+    ax.tick_params(axis=u'both', which=u'both',length=0)
+
+    # y-axis adjustments
+    ax.set_ylabel('')
+    plt.yticks(rotation=0, va='center')
+
+    # x-axis adjustments
+    ax.set_xlabel('')
+    ax.xaxis.grid(False)
+    ax.set_xticklabels([])
+
+    for c in ax.containers:
+        # Only label the total once, not for each segment
+        if c == ax.containers[-1]:  # Only label the last (rightmost) container
+            labels = [f"   {df['total_perc'].iloc[i]:,.1f}% " for i in range(len(df)-4)] + [f"   {df['total_perc'].iloc[i]:,.1f}% of imports" for i in range(len(df)-4,len(df))]
+            ax.bar_label(c, labels=labels, fontsize=10)
+
+    # add legend manually
+    legend_elements = [plt.Rectangle((0,0),2,2,facecolor=COL_GREEN,label='Free'),
+                    plt.Rectangle((0,0),2,2,facecolor=COL_RED,label='Tariffed')]
+    ax.legend(handles=legend_elements, loc='upper center', frameon=False, ncol=1, bbox_to_anchor=(0.95, 0.8))
+
+    plt.savefig(f'output/tariffs_us_hs_2d.png',dpi=400)
+    plt.close()
+
+    print('\n\nALT text:')
+    print(ax.get_title())
+    for i in range(len(df)):
+        print(f"{df.index[len(df)-i-1]}: {df.tariffed.iloc[len(df)-i-1]/1e9:,.1f} bil / {df.total.iloc[len(df)-i-1]/1e9:,.1f} bil exposed to tariffs")
+    print('')
+
+
 if __name__ == '__main__':
     START = datetime.now()
     print(f'\nStart: {START:%Y-%m-%d %H:%M:%S}\n')
-    print('\nGenerating bar charts by product')
-    make_bar_by_product('hs_2d')
-    make_bar_by_product('hs_6d')
-    print('\nGenerating bar chart for surplus/deficit')
+    print('\nGenerating exports by product')
+    make_bar_exports_by_product('hs_2d')
+    make_bar_exports_by_product('hs_6d')
+    print('\nGenerating surplus/deficit')
     make_bar_surplus_deficit()
-    print('\nGenerating bar chart for top 20')
+    print('\nGenerating top 20 exports/imports/domestic exports')
     make_bar_topN('exports',20)
     make_bar_topN('imports',20)
     make_bar_topN('domestic_exports',20)
+    print('\nGenerating selected tariffs on US imports')
+    make_bar_tariffs_selected()
+    print('\nGenerating tariffs on US imports at 6D HS level')
+    make_bar_imports_by_product()
     print(f'\nEnd: {datetime.now():%Y-%m-%d %H:%M:%S}\n')
     print(f'Runtime: {str(datetime.now() - START).split(".")[0]}\n')
