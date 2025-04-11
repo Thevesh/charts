@@ -21,7 +21,7 @@ def make_bar_cases_capita(df=None,V='rate',AGE='all'):
 
     for i in range(len(VARS)):
         pf = df[(df.date == df.date.max()) & (df.age == AGE)].copy()
-        pf['rate'] = pf[VARS[i]] / pf['population'] * 100
+        pf['rate'] = pf[VARS[i]] / pf['population'] * 100 # population is already in thousands
         pf = pf.sort_values(by='rate',ascending=True).set_index('state')
         pf.plot(kind='barh', width=0.7, y=V, edgecolor='black', lw=0, color=col_pos, ax=ax[i])
 
