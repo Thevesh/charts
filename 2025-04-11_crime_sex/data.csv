@@ -1,0 +1,91 @@
+﻿age,state,year,total,rape,incest,unnatural_sex,molest,sexual_harassment
+child,Malaysia,2021,1481,1123,222,62,30,44
+child,Malaysia,2022,1621,1277,235,63,11,35
+child,Malaysia,2023,1868,1500,248,73,11,36
+child,Johor,2021,140,105,18,12,2,3
+child,Johor,2022,150,118,22,6,1,3
+child,Johor,2023,200,144,40,12,1,3
+child,Kedah,2021,142,130,10,2,0,0
+child,Kedah,2022,149,125,15,7,0,2
+child,Kedah,2023,172,151,16,2,1,2
+child,Kelantan,2021,96,64,25,1,3,3
+child,Kelantan,2022,92,75,14,2,1,0
+child,Kelantan,2023,124,98,17,9,0,0
+child,Melaka,2021,36,28,8,0,0,0
+child,Melaka,2022,52,42,7,1,0,2
+child,Melaka,2023,76,61,8,4,1,2
+child,Negeri Sembilan,2021,51,36,10,1,0,4
+child,Negeri Sembilan,2022,60,50,7,1,0,2
+child,Negeri Sembilan,2023,69,50,12,6,0,1
+child,Pahang,2021,112,78,23,5,5,1
+child,Pahang,2022,107,77,21,8,0,1
+child,Pahang,2023,115,92,17,2,1,3
+child,Perak,2021,86,55,21,6,2,2
+child,Perak,2022,100,77,16,3,1,3
+child,Perak,2023,115,89,17,0,1,8
+child,Perlis,2021,26,18,7,0,1,0
+child,Perlis,2022,29,25,2,2,0,0
+child,Perlis,2023,26,23,3,0,0,0
+child,Pulau Pinang,2021,81,66,5,3,0,7
+child,Pulau Pinang,2022,102,87,13,1,0,1
+child,Pulau Pinang,2023,88,72,11,2,0,3
+child,Sabah,2021,134,99,25,4,3,3
+child,Sabah,2022,181,133,40,3,1,4
+child,Sabah,2023,215,174,35,3,0,3
+child,Sarawak,2021,113,99,11,1,0,2
+child,Sarawak,2022,109,90,19,0,0,0
+child,Sarawak,2023,108,94,12,2,0,0
+child,Selangor,2021,310,227,38,18,14,13
+child,Selangor,2022,338,266,39,15,7,11
+child,Selangor,2023,368,302,38,17,5,6
+child,Terengganu,2021,64,50,13,0,0,1
+child,Terengganu,2022,67,49,11,6,0,1
+child,Terengganu,2023,79,63,14,1,1,0
+child,W.P. Kuala Lumpur,2021,90,68,8,9,0,5
+child,W.P. Kuala Lumpur,2022,85,63,9,8,0,5
+child,W.P. Kuala Lumpur,2023,113,87,8,13,0,5
+all,Malaysia,2021,3179,1360,245,222,876,506
+all,Malaysia,2022,3303,1491,264,199,872,477
+all,Malaysia,2023,3644,1694,275,203,950,522
+all,Johor,2021,280,129,19,26,71,35
+all,Johor,2022,269,128,23,18,73,27
+all,Johor,2023,337,157,42,37,83,18
+all,Kedah,2021,210,140,13,6,34,17
+all,Kedah,2022,237,142,17,14,41,23
+all,Kedah,2023,275,166,20,13,48,28
+all,Kelantan,2021,175,82,26,11,35,21
+all,Kelantan,2022,153,87,14,7,34,11
+all,Kelantan,2023,200,116,19,11,36,18
+all,Melaka,2021,89,32,9,3,33,12
+all,Melaka,2022,131,51,9,12,38,21
+all,Melaka,2023,163,69,8,17,48,21
+all,Negeri Sembilan,2021,136,44,10,7,46,29
+all,Negeri Sembilan,2022,113,57,9,2,26,19
+all,Negeri Sembilan,2023,154,57,12,12,48,26
+all,Pahang,2021,186,89,24,14,45,14
+all,Pahang,2022,188,93,26,16,38,15
+all,Pahang,2023,199,101,20,4,52,22
+all,Perak,2021,183,71,24,10,49,29
+all,Perak,2022,206,84,16,6,64,36
+all,Perak,2023,251,93,20,6,78,54
+all,Perlis,2021,36,21,7,0,8,0
+all,Perlis,2022,45,28,3,3,4,7
+all,Perlis,2023,39,24,4,0,5,6
+all,Pulau Pinang,2021,190,85,6,12,75,42
+all,Pulau Pinang,2022,264,111,14,17,92,30
+all,Pulau Pinang,2023,225,87,12,7,72,47
+all,Sabah,2021,227,116,27,7,46,31
+all,Sabah,2022,300,151,46,7,60,36
+all,Sabah,2023,341,195,39,8,70,29
+all,Sarawak,2021,164,111,14,2,19,18
+all,Sarawak,2022,183,107,21,2,37,16
+all,Sarawak,2023,180,111,13,4,32,20
+all,Selangor,2021,904,299,45,92,301,167
+all,Selangor,2022,807,325,40,70,245,127
+all,Selangor,2023,840,346,48,51,259,136
+all,Terengganu,2021,114,55,13,10,25,11
+all,Terengganu,2022,124,52,15,15,28,14
+all,Terengganu,2023,135,73,14,9,30,9
+all,W.P. Kuala Lumpur,2021,285,86,8,22,89,80
+all,W.P. Kuala Lumpur,2022,283,75,11,10,92,95
+all,W.P. Kuala Lumpur,2023,305,99,8,24,89,88
