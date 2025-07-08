@@ -188,8 +188,74 @@ def scatter_dun_eq():
     plt.savefig('scatter_dun_eq.png', dpi=400, bbox_inches='tight')
 
 
+def scatter_parlimen_eq():
+    df = pd.read_csv('voters_ge15.csv',usecols=['state','parlimen','total']).rename(columns={'total':'voters'})
+    df = df.groupby(['state','parlimen']).agg({'voters': 'sum'}).reset_index()
+    df['avg'] = df.voters.mean()
+    df['diff_eq'] = df.voters/df.avg
+    df['desc'] = 'Within 15% of avg'
+    df.loc[df.diff_eq > 1.15,'desc'] = 'Oversized'
+    df.loc[df.diff_eq < 0.85,'desc'] = 'Undersized'
+
+    af = df.copy().groupby('state').agg({'diff_eq': 'size'})
+    af = af.rename(columns={'diff_eq':'seats'})
+    af['undersized'] = df[df.diff_eq < 0.85].groupby('state').agg({'diff_eq': 'size'})
+    af.undersized = af.undersized.fillna(0).astype(int)
+    af['prop_undersized'] = af.undersized/af.seats
+    af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'})['diff_eq']
+    af = af.sort_values(by='max_size',ascending=True)
+    STATE_PLOT = af.index.tolist()
+    df['diff_eq'] = (df.diff_eq * 100).round(2)
+
+    TARGET_PLOT = ['Undersized','Within 15% of avg','Oversized']
+    PLOT_COLOURS = ['blue','#c3c3c3','red']
+    COLOURS = dict(zip(TARGET_PLOT,PLOT_COLOURS))
+
+    plt.rcParams.update({'font.size': 10,
+                        'font.family': 'sans-serif',
+                        'grid.linestyle': 'dashed'})
+    plt.rcParams["figure.figsize"] = [7,7]
+    plt.rcParams["figure.autolayout"] = True
+    _, ax = plt.subplots()
+
+    for s in STATE_PLOT:
+        for c in COLOURS:
+            ax.scatter(
+                df[(df.state == s) & (df.desc == c)]['diff_eq'], 
+                [f'{s} [{len(df[(df.state == s)])}]']*len(df[(df.state == s) & (df.desc == c)]), 
+                color=COLOURS[c], marker='o', s=70, label=c
+            )
+
+    # plot-wide adjustments
+    ax.set_title(f'Size of Parlimens vs national average\nas of GE-15 (November 2022)\n\n',linespacing=2,fontsize=11)
+    for b in ['top','right','left']: ax.spines[b].set_visible(False)
+    for b in ['bottom','left']: ax.spines[b].set_color('#cacaca')
+    ax.set_axisbelow(True)
+    ax.tick_params(axis=u'both', which=u'both',length=0)
+    ax.grid(True,alpha=0.5)
+
+    # y-axis adjustments
+    ax.set_ylabel('')
+
+    # x-axis adjustments
+    ax.set_xlabel('')
+    ax.set_xlim(0)
+    ax.get_xaxis().set_visible(True)
+    plt.xticks(rotation=0)
+    ax.set_xticklabels(['','0.5x','National Avg','1.5x','2x','2.5x','3x'])
+
+    # legend
+    handles, labels = plt.gca().get_legend_handles_labels()
+    order = [x for x in range(len(TARGET_PLOT))]
+    ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order], labelspacing=1, 
+            loc='upper center', framealpha=0.7, ncols=5, bbox_to_anchor=(0.5, 1.09))
+
+    plt.savefig('scatter_parlimen_eq.png', dpi=400, bbox_inches='tight')
+
+
 if __name__ == '__main__':
     bar_dun_distribution()
     bar_dun_size(V='maxmin')
     bar_dun_size(V='avg')
     scatter_dun_eq()
+    scatter_parlimen_eq()
