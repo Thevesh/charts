@@ -177,7 +177,7 @@ def scatter_dun_eq():
     ax.set_xlim(20)
     ax.get_xaxis().set_visible(True)
     plt.xticks(rotation=0)
-    ax.set_xticklabels(['','-50%','State Avg','+50%','+100%','+150%','+200%'])
+    ax.set_xticklabels(['','0.5x','State Avg','1.5x','2x','2.5x','3x'])
 
     # legend
     handles, labels = plt.gca().get_legend_handles_labels()
