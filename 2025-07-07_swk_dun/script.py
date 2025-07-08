@@ -192,20 +192,22 @@ def scatter_parlimen_eq():
     df = pd.read_csv('voters_ge15.csv',usecols=['state','parlimen','total']).rename(columns={'total':'voters'})
     df = df.groupby(['state','parlimen']).agg({'voters': 'sum'}).reset_index()
     df['avg'] = df.voters.mean()
-    df['diff_eq'] = df.voters/df.avg
+    df['diff_eq'] = df.voters/df.avg * 100
     df['desc'] = 'Within 15% of avg'
-    df.loc[df.diff_eq > 1.15,'desc'] = 'Oversized'
-    df.loc[df.diff_eq < 0.85,'desc'] = 'Undersized'
+    df.loc[df.diff_eq > 115,'desc'] = 'Oversized'
+    df.loc[df.diff_eq < 85,'desc'] = 'Undersized'
 
     af = df.copy().groupby('state').agg({'diff_eq': 'size'})
     af = af.rename(columns={'diff_eq':'seats'})
-    af['undersized'] = df[df.diff_eq < 0.85].groupby('state').agg({'diff_eq': 'size'})
-    af.undersized = af.undersized.fillna(0).astype(int)
-    af['prop_undersized'] = af.undersized/af.seats
+    af['undersized'] = df[df.diff_eq < 85].groupby('state').agg({'diff_eq': 'size'})
+    af['oversized'] = df[df.diff_eq > 115].groupby('state').agg({'diff_eq': 'size'})
+    af['within'] = af.seats - af.undersized - af.oversized
+    for c in ['undersized','oversized','within']:
+        af[c] = af[c].fillna(0).astype(int)
+        af[f'prop_{c}'] = af[c]/af.seats * 100
     af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'})['diff_eq']
     af = af.sort_values(by='max_size',ascending=True)
     STATE_PLOT = af.index.tolist()
-    df['diff_eq'] = (df.diff_eq * 100).round(2)
 
     TARGET_PLOT = ['Undersized','Within 15% of avg','Oversized']
     PLOT_COLOURS = ['blue','#c3c3c3','red']
@@ -248,14 +250,14 @@ def scatter_parlimen_eq():
     handles, labels = plt.gca().get_legend_handles_labels()
     order = [x for x in range(len(TARGET_PLOT))]
     ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order], labelspacing=1, 
-            loc='upper center', framealpha=0.7, ncols=5, bbox_to_anchor=(0.5, 1.09))
+            loc='upper center', framealpha=0.7, ncols=5, bbox_to_anchor=(0.5, 1.08))
 
     plt.savefig('scatter_parlimen_eq.png', dpi=400, bbox_inches='tight')
 
 
 if __name__ == '__main__':
-    bar_dun_distribution()
-    bar_dun_size(V='maxmin')
-    bar_dun_size(V='avg')
-    scatter_dun_eq()
+    # bar_dun_distribution()
+    # bar_dun_size(V='maxmin')
+    # bar_dun_size(V='avg')
+    # scatter_dun_eq()
     scatter_parlimen_eq()
