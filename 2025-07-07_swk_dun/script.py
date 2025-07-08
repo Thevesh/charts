@@ -129,18 +129,31 @@ def scatter_dun_eq():
     df = pd.read_csv('voters_ge15.csv',usecols=['state','dun','total']).rename(columns={'total':'voters'})
     df = df[~df.state.str.contains('W.P.')].reset_index(drop=True)
     df['avg'] = df.groupby('state')['voters'].transform('mean').astype(int)
-    df['diff_eq'] = df.voters/df.avg
+    df['diff_eq'] = df.voters/df.avg * 100
     df['desc'] = 'Within 15% of avg'
-    df.loc[df.diff_eq > 1.15,'desc'] = 'Oversized'
-    df.loc[df.diff_eq < 0.85,'desc'] = 'Undersized'
+    df.loc[df.diff_eq > 115,'desc'] = 'Oversized'
+    df.loc[df.diff_eq < 85,'desc'] = 'Undersized'
 
-    af = df.groupby('state').agg({'diff_eq': 'size'}).reset_index()
-    af['undersized'] = df[df.diff_eq < 0.85].groupby('state').agg({'diff_eq': 'size'}).reset_index()['diff_eq']
-    af['prop_undersized'] = af.undersized/af.diff_eq
-    af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'}).reset_index()['diff_eq']
-    af = af.sort_values(by='max_size',ascending=True)
-    STATE_PLOT = af.state.tolist()
-    df['diff_eq'] = (df.diff_eq * 100).round(2)
+    af = df.groupby('state').agg({'diff_eq': 'size'})
+    af = af.rename(columns={'diff_eq':'seats'})
+    af['undersized'] = df[df.diff_eq < 85].groupby('state').agg({'diff_eq': 'size'})
+    af['oversized'] = df[df.diff_eq > 115].groupby('state').agg({'diff_eq': 'size'})
+    af['within'] = af.seats - af.undersized - af.oversized
+    for c in ['undersized','oversized','within']:
+        af[c] = af[c].fillna(0).astype(int)
+        af[f'prop_{c}'] = af[c]/af.seats * 100
+    af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'})['diff_eq']
+    af = af.sort_values(by='oversized',ascending=True)
+    STATE_PLOT = af.index.tolist()
+
+    ALT = ""
+    for i in range(len(af)):
+        us = f'{af.undersized.iloc[i]} under ({af.prop_undersized.iloc[i]:.0f}%)'
+        ws = f'{af.within.iloc[i]} within ({af.prop_within.iloc[i]:.0f}%)'
+        os = f'{af.oversized.iloc[i]} over ({af.prop_oversized.iloc[i]:.0f}%)'
+        ALT += f'{af.index[i]} [{af.seats.iloc[i]}]: {us}, {ws}, {os}\n'
+    print(len(ALT))
+    print(ALT)
 
     TARGET_PLOT = ['Undersized','Within 15% of avg','Oversized']
     PLOT_COLOURS = ['blue','#c3c3c3','red']
@@ -208,6 +221,15 @@ def scatter_parlimen_eq():
     af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'})['diff_eq']
     af = af.sort_values(by='max_size',ascending=True)
     STATE_PLOT = af.index.tolist()
+
+    ALT = ""
+    for i in range(len(af)):
+        us = f'{af.undersized.iloc[i]} under ({af.prop_undersized.iloc[i]:.0f}%)'
+        ws = f'{af.within.iloc[i]} within ({af.prop_within.iloc[i]:.0f}%)'
+        os = f'{af.oversized.iloc[i]} over ({af.prop_oversized.iloc[i]:.0f}%)'
+        ALT += f'{af.index[i]} [{af.seats.iloc[i]}]: {us}, {ws}, {os}\n'
+    print(len(ALT))
+    print(ALT)
 
     TARGET_PLOT = ['Undersized','Within 15% of avg','Oversized']
     PLOT_COLOURS = ['blue','#c3c3c3','red']
