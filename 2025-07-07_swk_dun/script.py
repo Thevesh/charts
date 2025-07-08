@@ -69,12 +69,13 @@ def bar_dun_size(V='maxmin'):
 
     pf = df.groupby('state').agg({'total': 'sum'}).reset_index()
     pf['seats'] = df.groupby('state').agg({'total': 'size'}).reset_index()['total']
+    pf.loc[pf.state == 'Sarawak','seats'] = 99
     pf['avg'] = pf['total'] / pf['seats']
     pf['min'] = df.groupby('state').agg({'total': 'min'}).reset_index()['total']
     pf['max'] = df.groupby('state').agg({'total': 'max'}).reset_index()['total']
     pf['maxmin'] = pf['max']/pf['min']
     pf['std'] = df.groupby('state').agg({'total': 'std'}).reset_index()['total']
-    pf = pf.sort_values(by='maxmin', ascending=True).set_index('state')
+    pf = pf.sort_values(by=V, ascending=True).set_index('state')
 
     plt.rcParams.update({'font.size': 10,
                         'font.family': 'sans-serif',
@@ -89,8 +90,8 @@ def bar_dun_size(V='maxmin'):
 
     # plot-wide adjustments
     SPACE = ''
-    var_desc = 'Size of biggest DUN vs smallest DUN' if V == 'maxmin' else 'Voters per DUN (assuming Swk = 99)'
-    ax.set_title(f"{SPACE}DUN Seats by State\n{var_desc}\n(as of GE15 in 2022)",linespacing=1.8,fontsize=11)
+    var_desc = 'Biggest DUN vs smallest DUN\nas of GE15 (2022)' if V == 'maxmin' else 'Avg Voters per DUN as of GE15 (2022)\n(assuming Swk has 99 DUNs)'
+    ax.set_title(f"{SPACE}{var_desc}",linespacing=1.8,fontsize=11)
     for b in ['top','right','bottom']: ax.spines[b].set_visible(False)
     ax.spines['left'].set_color('#cccccc')
     ax.get_legend().remove()
@@ -106,7 +107,10 @@ def bar_dun_size(V='maxmin'):
     ax.xaxis.grid(False)
     ax.get_xaxis().set_visible(False)
     for c in ax.containers:
-        labels = [f"  {pf[V].iloc[i]:,.2f}x" for i in range(len(pf))]
+        if V == 'maxmin':
+            labels = [f"  {pf[V].iloc[i]:,.2f}x" for i in range(len(pf))]
+        else:
+            labels = [f"  {pf[V].iloc[i]:,.0f}" for i in range(len(pf))]
         ax.bar_label(c, labels=labels,fontsize=10)
 
     # print chart title
@@ -121,7 +125,71 @@ def bar_dun_size(V='maxmin'):
     pf.sort_values(by='seats')
 
 
+def scatter_dun_eq():
+    df = pd.read_csv('voters_ge15.csv',usecols=['state','dun','total']).rename(columns={'total':'voters'})
+    df = df[~df.state.str.contains('W.P.')].reset_index(drop=True)
+    df['avg'] = df.groupby('state')['voters'].transform('mean').astype(int)
+    df['diff_eq'] = df.voters/df.avg
+    df['desc'] = 'Within 15% of avg'
+    df.loc[df.diff_eq > 1.15,'desc'] = 'Oversized'
+    df.loc[df.diff_eq < 0.85,'desc'] = 'Undersized'
+
+    af = df.groupby('state').agg({'diff_eq': 'size'}).reset_index()
+    af['undersized'] = df[df.diff_eq < 0.85].groupby('state').agg({'diff_eq': 'size'}).reset_index()['diff_eq']
+    af['prop_undersized'] = af.undersized/af.diff_eq
+    af['max_size'] = df.groupby('state').agg({'diff_eq': 'max'}).reset_index()['diff_eq']
+    af = af.sort_values(by='max_size',ascending=True)
+    STATE_PLOT = af.state.tolist()
+    df['diff_eq'] = (df.diff_eq * 100).round(2)
+
+    TARGET_PLOT = ['Undersized','Within 15% of avg','Oversized']
+    PLOT_COLOURS = ['blue','#c3c3c3','red']
+    COLOURS = dict(zip(TARGET_PLOT,PLOT_COLOURS))
+
+    plt.rcParams.update({'font.size': 10,
+                        'font.family': 'sans-serif',
+                        'grid.linestyle': 'dashed'})
+    plt.rcParams["figure.figsize"] = [6.5,6.5]
+    plt.rcParams["figure.autolayout"] = True
+    fig, ax = plt.subplots()
+
+    for s in STATE_PLOT:
+        for c in COLOURS:
+            ax.scatter(
+                df[(df.state == s) & (df.desc == c)]['diff_eq'], 
+                [s]*len(df[(df.state == s) & (df.desc == c)]), 
+                color=COLOURS[c], marker='o', s=70, label=c
+            )
+
+    # plot-wide adjustments
+    ax.set_title(f'Size of DUNs relative to state average\nas of GE-15 (November 2022)\n\n',linespacing=2,fontsize=11)
+    for b in ['top','right','left']: ax.spines[b].set_visible(False)
+    for b in ['bottom','left']: ax.spines[b].set_color('#cacaca')
+    ax.set_axisbelow(True)
+    ax.tick_params(axis=u'both', which=u'both',length=0)
+    ax.grid(True,alpha=0.5)
+
+    # y-axis adjustments
+    ax.set_ylabel('')
+
+    # x-axis adjustments
+    ax.set_xlabel('')
+    ax.set_xlim(20)
+    ax.get_xaxis().set_visible(True)
+    plt.xticks(rotation=0)
+    ax.set_xticklabels(['','-50%','State Avg','+50%','+100%','+150%','+200%'])
+
+    # legend
+    handles, labels = plt.gca().get_legend_handles_labels()
+    order = [x for x in range(len(TARGET_PLOT))]
+    ax.legend([handles[idx] for idx in order],[labels[idx] for idx in order], labelspacing=1, 
+            loc='upper center', framealpha=0.7, ncols=5, bbox_to_anchor=(0.5, 1.09))
+    
+    plt.savefig('scatter_dun_eq.png', dpi=400, bbox_inches='tight')
+
+
 if __name__ == '__main__':
     bar_dun_distribution()
     bar_dun_size(V='maxmin')
     bar_dun_size(V='avg')
+    scatter_dun_eq()
