@@ -175,7 +175,7 @@ def scatter_dun_eq():
             )
 
     # plot-wide adjustments
-    ax.set_title(f'Size of DUNs relative to state average\nas of GE-15 (November 2022)\n\n',linespacing=2,fontsize=11)
+    ax.set_title(f'Size of DUNs (number of voters, NOT land area)\nrelative to state average (as of GE-15)\n\n',linespacing=2,fontsize=11)
     for b in ['top','right','left']: ax.spines[b].set_visible(False)
     for b in ['bottom','left']: ax.spines[b].set_color('#cacaca')
     ax.set_axisbelow(True)
@@ -186,7 +186,7 @@ def scatter_dun_eq():
     ax.set_ylabel('')
 
     # x-axis adjustments
-    ax.set_xlabel('')
+    ax.set_xlabel('\nNumber of voters')
     ax.set_xlim(20)
     ax.get_xaxis().set_visible(True)
     plt.xticks(rotation=0)
@@ -251,7 +251,7 @@ def scatter_parlimen_eq():
             )
 
     # plot-wide adjustments
-    ax.set_title(f'Size of Parlimens vs national average\nas of GE-15 (November 2022)\n\n',linespacing=2,fontsize=11)
+    ax.set_title(f'Size of Parlimens (number of voters, NOT land area)\nrelative to national average (as of GE-15)\n\n',linespacing=2,fontsize=11)
     for b in ['top','right','left']: ax.spines[b].set_visible(False)
     for b in ['bottom','left']: ax.spines[b].set_color('#cacaca')
     ax.set_axisbelow(True)
@@ -262,7 +262,7 @@ def scatter_parlimen_eq():
     ax.set_ylabel('')
 
     # x-axis adjustments
-    ax.set_xlabel('')
+    ax.set_xlabel('\nNumber of voters')
     ax.set_xlim(0)
     ax.get_xaxis().set_visible(True)
     plt.xticks(rotation=0)
@@ -281,5 +281,5 @@ if __name__ == '__main__':
     # bar_dun_distribution()
     # bar_dun_size(V='maxmin')
     # bar_dun_size(V='avg')
-    # scatter_dun_eq()
+    scatter_dun_eq()
     scatter_parlimen_eq()
