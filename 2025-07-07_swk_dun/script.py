@@ -121,8 +121,6 @@ def bar_dun_size(V='maxmin'):
     print('')
 
     plt.savefig(f'dun_ge15_{V}.png', dpi=400, bbox_inches='tight')
-    pf.total = (pf.total/1e6).round(1)
-    pf.sort_values(by='seats')
 
 
 def scatter_dun_eq():
